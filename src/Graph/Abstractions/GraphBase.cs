@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Graph.Internal;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Graph.Abstractions
     /// Base class for all graph types
     /// </summary>
     /// <typeparam name="TVertex">Graph vertex data type</typeparam>
-    public abstract class GraphBase<TVertex>
+    public abstract class GraphBase<TVertex> where TVertex : IComparable<TVertex>
     {
         protected readonly IDictionary<TVertex, IList<TVertex>> _adjacencyLists;
 
@@ -37,7 +38,7 @@ namespace Graph.Abstractions
         /// </summary>
         protected GraphBase()
         {
-            _adjacencyLists = new Dictionary<TVertex, IList<TVertex>>();
+            _adjacencyLists = new Dictionary<TVertex, IList<TVertex>>(new GraphVertexEqualityComparer<TVertex>());
         }
 
         /// <summary>

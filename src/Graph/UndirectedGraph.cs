@@ -1,4 +1,5 @@
 ﻿using Graph.Abstractions;
+using System;
 using System.Collections.Generic;
 
 namespace Graph
@@ -8,6 +9,7 @@ namespace Graph
     /// </summary>
     /// <typeparam name="TVertex">Graph vertex data type</typeparam>
     public class UndirectedGraph<TVertex> : Graph<TVertex>, IUndirectedGraph<TVertex>
+        where TVertex : IComparable<TVertex>
     {
         /// <summary>
         /// Initializes an empty undirected unweighted graph with no vertices and edges
