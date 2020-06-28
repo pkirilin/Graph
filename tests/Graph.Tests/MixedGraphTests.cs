@@ -1,4 +1,5 @@
 ﻿using Graph.Tests.Data;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -83,6 +84,16 @@ namespace Graph.Tests
             });
         }
 
+        [Theory]
+        [MemberData(nameof(MixedGraphTestData.MemberData_AddDirectedEdge_InvalidOperationException), MemberType = typeof(MixedGraphTestData))]
+        public void AddDirectedEdge_ShouldThrowInvalidOperationException_WhenEdgesCreatesLoopOrMultipleEdge(MixedGraph<int> graph, int source, int destination)
+        {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                graph.AddDirectedEdge(source, destination);
+            });
+        }
+
         [Fact]
         public void RemoveDirectedEdge_ShouldRemoveConnectedVertexFromAdjacencyLists_WhenExistingKeysSpecified()
         {
@@ -140,6 +151,16 @@ namespace Graph.Tests
         public void AddUndirectedEdge_ShouldThrowKeyNotFoundException_WhenNotExistingKeySpecified(MixedGraph<int> graph, int source, int destination)
         {
             Assert.Throws<KeyNotFoundException>(() =>
+            {
+                graph.AddUndirectedEdge(source, destination);
+            });
+        }
+
+        [Theory]
+        [MemberData(nameof(MixedGraphTestData.MemberData_AddUndirectedEdge_InvalidOperationException), MemberType = typeof(MixedGraphTestData))]
+        public void AddUndirectedEdge_ShouldThrowInvalidOperationException_WhenEdgeCreatesLoopOrMultipleEdge(MixedGraph<int> graph, int source, int destination)
+        {
+            Assert.Throws<InvalidOperationException>(() =>
             {
                 graph.AddUndirectedEdge(source, destination);
             });

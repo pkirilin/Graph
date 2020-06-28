@@ -8,16 +8,16 @@ namespace Graph.Tests.Data
         {
             get
             {
-                var graph = new MixedGraph<int>();
+                var vertices = new List<int> { 0, 1, 2 };
+                var directedEdges = new List<KeyValuePair<int, int>>()
+                {
+                    new KeyValuePair<int, int>(0, 1),
+                    new KeyValuePair<int, int>(1, 2),
+                    new KeyValuePair<int, int>(2, 0),
+                    new KeyValuePair<int, int>(2, 1)
+                };
 
-                graph.AddVertex(0);
-                graph.AddVertex(1);
-                graph.AddVertex(2);
-
-                graph.AddDirectedEdge(0, 1);
-                graph.AddDirectedEdge(1, 2);
-                graph.AddDirectedEdge(2, 0);
-                graph.AddDirectedEdge(2, 1);
+                var graph = new MixedGraph<int>(vertices, directedEdges, new List<KeyValuePair<int, int>>());
 
                 yield return new object[] { graph, 100, 0 };
                 yield return new object[] { graph, 2, 100 };
@@ -25,20 +25,40 @@ namespace Graph.Tests.Data
             }
         }
 
+        public static IEnumerable<object[]> MemberData_AddDirectedEdge_InvalidOperationException
+        {
+            get
+            {
+                var vertices = new List<int> { 0, 1, 2 };
+                var directedEdges = new List<KeyValuePair<int, int>>()
+                {
+                    new KeyValuePair<int, int>(0, 1),
+                    new KeyValuePair<int, int>(1, 2),
+                    new KeyValuePair<int, int>(2, 0),
+                    new KeyValuePair<int, int>(2, 1)
+                };
+
+                var graph = new MixedGraph<int>(vertices, directedEdges, new List<KeyValuePair<int, int>>());
+
+                yield return new object[] { graph, 0, 0 };
+                yield return new object[] { graph, 1, 2 };
+            }
+        }
+
         public static IEnumerable<object[]> MemberData_RemoveDirectedEdge_KeyNotFoundException
         {
             get
             {
-                var graph = new MixedGraph<int>();
+                var vertices = new List<int> { 0, 1, 2 };
+                var directedEdges = new List<KeyValuePair<int, int>>()
+                {
+                    new KeyValuePair<int, int>(0, 1),
+                    new KeyValuePair<int, int>(1, 2),
+                    new KeyValuePair<int, int>(2, 0),
+                    new KeyValuePair<int, int>(2, 1)
+                };
 
-                graph.AddVertex(0);
-                graph.AddVertex(1);
-                graph.AddVertex(2);
-
-                graph.AddDirectedEdge(0, 1);
-                graph.AddDirectedEdge(1, 2);
-                graph.AddDirectedEdge(2, 0);
-                graph.AddDirectedEdge(2, 1);
+                var graph = new MixedGraph<int>(vertices, directedEdges, new List<KeyValuePair<int, int>>());
 
                 yield return new object[] { graph, 100, 0 };
                 yield return new object[] { graph, 2, 100 };
@@ -50,15 +70,15 @@ namespace Graph.Tests.Data
         {
             get
             {
-                var graph = new MixedGraph<int>();
+                var vertices = new List<int> { 0, 1, 2 };
+                var undirectedEdges = new List<KeyValuePair<int, int>>()
+                {
+                    new KeyValuePair<int, int>(0, 1),
+                    new KeyValuePair<int, int>(0, 2),
+                    new KeyValuePair<int, int>(1, 2)
+                };
 
-                graph.AddVertex(0);
-                graph.AddVertex(1);
-                graph.AddVertex(2);
-
-                graph.AddUndirectedEdge(0, 1);
-                graph.AddUndirectedEdge(0, 2);
-                graph.AddUndirectedEdge(1, 2);
+                var graph = new MixedGraph<int>(vertices, new List<KeyValuePair<int, int>>(), undirectedEdges);
 
                 yield return new object[] { graph, 100, 0 };
                 yield return new object[] { graph, 1, 100 };
@@ -66,19 +86,39 @@ namespace Graph.Tests.Data
             }
         }
 
+        public static IEnumerable<object[]> MemberData_AddUndirectedEdge_InvalidOperationException
+        {
+            get
+            {
+                var vertices = new List<int> { 0, 1, 2 };
+                var undirectedEdges = new List<KeyValuePair<int, int>>()
+                {
+                    new KeyValuePair<int, int>(0, 1),
+                    new KeyValuePair<int, int>(0, 2),
+                    new KeyValuePair<int, int>(1, 2)
+                };
+
+                var graph = new MixedGraph<int>(vertices, new List<KeyValuePair<int, int>>(), undirectedEdges);
+
+                yield return new object[] { graph, 0, 0 };
+                yield return new object[] { graph, 1, 2 };
+                yield return new object[] { graph, 2, 1 };
+            }
+        }
+
         public static IEnumerable<object[]> MemberData_RemoveUndirectedEdge_KeyNotFoundException
         {
             get
             {
-                var graph = new MixedGraph<int>();
+                var vertices = new List<int> { 0, 1, 2 };
+                var undirectedEdges = new List<KeyValuePair<int, int>>()
+                {
+                    new KeyValuePair<int, int>(0, 1),
+                    new KeyValuePair<int, int>(0, 2),
+                    new KeyValuePair<int, int>(1, 2)
+                };
 
-                graph.AddVertex(0);
-                graph.AddVertex(1);
-                graph.AddVertex(2);
-
-                graph.AddUndirectedEdge(0, 1);
-                graph.AddUndirectedEdge(0, 2);
-                graph.AddUndirectedEdge(1, 2);
+                var graph = new MixedGraph<int>(vertices, new List<KeyValuePair<int, int>>(), undirectedEdges);
 
                 yield return new object[] { graph, 100, 0 };
                 yield return new object[] { graph, 1, 100 };

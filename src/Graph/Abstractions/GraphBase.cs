@@ -58,12 +58,38 @@ namespace Graph.Abstractions
         /// <param name="source">First graph edge vertex</param>
         /// <param name="destination">Second graph edge vertex</param>
         /// <exception cref="KeyNotFoundException"></exception>
-        protected void EnsureEdgeVerticesCorrect(TVertex source, TVertex destination)
+        protected void EnsureEdgeVerticesExist(TVertex source, TVertex destination)
         {
             if (!_adjacencyLists.ContainsKey(source))
                 throw new KeyNotFoundException($"Vertex with key = '{source}' doesn't exist in graph");
             if (!_adjacencyLists.ContainsKey(destination))
                 throw new KeyNotFoundException($"Vertex with key = '{destination}' doesn't exist in graph");
+        }
+
+        /// <summary>
+        /// Checks if graph edge's source and destination vertices are equal (in this case they create loop).
+        /// If so, throws InvalidOperationException
+        /// </summary>
+        /// <param name="source">Source edge vertex</param>
+        /// <param name="destination">Destination edge vertex</param>
+        /// <exception cref="InvalidOperationException"></exception>
+        protected void ForbidLoop(TVertex source, TVertex destination)
+        {
+            if (source.CompareTo(destination) == 0)
+                throw new InvalidOperationException("Graph can't contain loops");
+        }
+
+        /// <summary>
+        /// Checks if edge with specified source and destination vertices already exists in graph.
+        /// If so, throws InvalidOperationException
+        /// </summary>
+        /// <param name="source">Source edge vertex</param>
+        /// <param name="destination">Destination edge vertex</param>
+        /// <exception cref="InvalidOperationException"></exception>
+        protected void ForbidMultipleEdge(TVertex source, TVertex destination)
+        {
+            if (_adjacencyLists[source].Any(v => v.CompareTo(destination) == 0))
+                throw new InvalidOperationException($"Attempted to insert edge connecting vertices '{source}' and '{destination}' which already exists, but multiple edges are forbidden");
         }
 
         /// <summary>

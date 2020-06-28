@@ -1,4 +1,5 @@
 ﻿using Graph.Tests.Data;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -71,6 +72,16 @@ namespace Graph.Tests
         public void AddUndirectedEdge_ShouldThrowKeyNotFoundException_WhenNotExistingKeySpecified(UndirectedGraph<int> graph, int source, int destination)
         {
             Assert.Throws<KeyNotFoundException>(() =>
+            {
+                graph.AddUndirectedEdge(source, destination);
+            });
+        }
+
+        [Theory]
+        [MemberData(nameof(UndirectedGraphTestData.MemberData_AddUndirectedEdge_InvalidOperationException), MemberType = typeof(UndirectedGraphTestData))]
+        public void AddUndirectedEdge_ShouldThrowInvalidOperationException_WhenEdgeCreatesLoopOrMultipleEdge(UndirectedGraph<int> graph, int source, int destination)
+        {
+            Assert.Throws<InvalidOperationException>(() =>
             {
                 graph.AddUndirectedEdge(source, destination);
             });

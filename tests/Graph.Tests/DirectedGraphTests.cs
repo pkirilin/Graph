@@ -1,4 +1,5 @@
 ﻿using Graph.Tests.Data;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -74,6 +75,16 @@ namespace Graph.Tests
         public void AddDirectedEdge_ShouldThrowKeyNotFoundException_WhenNotExistingKeySpecified(DirectedGraph<int> graph, int source, int destination)
         {
             Assert.Throws<KeyNotFoundException>(() =>
+            {
+                graph.AddDirectedEdge(source, destination);
+            });
+        }
+
+        [Theory]
+        [MemberData(nameof(DirectedGraphTestData.MemberData_AddDirectedEdge_InvalidOperationException), MemberType = typeof(DirectedGraphTestData))]
+        public void AddDirectedEdge_ShouldThrowInvalidOperationException_WhenEdgeCreatesLoopOrMultipleEdge(DirectedGraph<int> graph, int source, int destination)
+        {
+            Assert.Throws<InvalidOperationException>(() =>
             {
                 graph.AddDirectedEdge(source, destination);
             });

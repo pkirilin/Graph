@@ -41,14 +41,18 @@ namespace Graph
 
         public void AddUndirectedEdge(TVertex source, TVertex destination)
         {
-            EnsureEdgeVerticesCorrect(source, destination);
+            EnsureEdgeVerticesExist(source, destination);
+            ForbidLoop(source, destination);
+            ForbidMultipleEdge(source, destination);
+            ForbidMultipleEdge(destination, source);
+
             _adjacencyLists[source].Add(destination);
             _adjacencyLists[destination].Add(source);
         }
 
         public void RemoveUndirectedEdge(TVertex source, TVertex destination)
         {
-            EnsureEdgeVerticesCorrect(source, destination);
+            EnsureEdgeVerticesExist(source, destination);
             _adjacencyLists[source].Remove(destination);
             _adjacencyLists[destination].Remove(source);
         }

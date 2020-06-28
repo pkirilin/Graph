@@ -8,15 +8,15 @@ namespace Graph.Tests.Data
         {
             get
             {
-                var graph = new UndirectedGraph<int>();
+                var vertices = new List<int> { 0, 1, 2 };
+                var edges = new List<KeyValuePair<int, int>>()
+                {
+                    new KeyValuePair<int, int>(0, 1),
+                    new KeyValuePair<int, int>(0, 2),
+                    new KeyValuePair<int, int>(1, 2)
+                };
 
-                graph.AddVertex(0);
-                graph.AddVertex(1);
-                graph.AddVertex(2);
-
-                graph.AddUndirectedEdge(0, 1);
-                graph.AddUndirectedEdge(0, 2);
-                graph.AddUndirectedEdge(1, 2);
+                var graph = new UndirectedGraph<int>(vertices, edges);
 
                 yield return new object[] { graph, 100, 0 };
                 yield return new object[] { graph, 1, 100 };
@@ -24,19 +24,39 @@ namespace Graph.Tests.Data
             }
         }
 
+        public static IEnumerable<object[]> MemberData_AddUndirectedEdge_InvalidOperationException
+        {
+            get
+            {
+                var vertices = new List<int> { 0, 1, 2 };
+                var edges = new List<KeyValuePair<int, int>>()
+                {
+                    new KeyValuePair<int, int>(0, 1),
+                    new KeyValuePair<int, int>(0, 2),
+                    new KeyValuePair<int, int>(1, 2)
+                };
+
+                var graph = new UndirectedGraph<int>(vertices, edges);
+
+                yield return new object[] { graph, 0, 0 };
+                yield return new object[] { graph, 1, 2 };
+                yield return new object[] { graph, 2, 1 };
+            }
+        }
+
         public static IEnumerable<object[]> MemberData_RemoveUndirectedEdge_KeyNotFoundException
         {
             get
             {
-                var graph = new UndirectedGraph<int>();
+                var vertices = new List<int> { 0, 1, 2 };
+                var edges = new List<KeyValuePair<int, int>>()
+                {
+                    new KeyValuePair<int, int>(0, 1),
+                    new KeyValuePair<int, int>(0, 2),
+                    new KeyValuePair<int, int>(1, 2)
+                };
 
-                graph.AddVertex(0);
-                graph.AddVertex(1);
-                graph.AddVertex(2);
-
-                graph.AddUndirectedEdge(0, 1);
-                graph.AddUndirectedEdge(0, 2);
-                graph.AddUndirectedEdge(1, 2);
+                var graph = new UndirectedGraph<int>(vertices, edges);
 
                 yield return new object[] { graph, 100, 0 };
                 yield return new object[] { graph, 1, 100 };
