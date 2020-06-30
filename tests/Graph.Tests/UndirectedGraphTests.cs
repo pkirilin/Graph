@@ -50,6 +50,25 @@ namespace Graph.Tests
         }
 
         [Fact]
+        public void RemoveVertex_ShouldRemoveVertexWithAllRelatedEdges_WhenTargetVertexExists()
+        {
+            var vertices = new List<int> { 0, 1, 2 };
+            var edges = new List<KeyValuePair<int, int>>
+            {
+                new KeyValuePair<int, int>(0, 1),
+                new KeyValuePair<int, int>(0, 2),
+                new KeyValuePair<int, int>(1, 2)
+            };
+            var graph = new UndirectedGraph<int>(vertices, edges);
+
+            graph.RemoveVertex(0);
+
+            Assert.DoesNotContain(0, graph.AdjacencyLists);
+            Assert.Equal(new List<int> { 2 }, graph.AdjacencyLists[1]);
+            Assert.Equal(new List<int> { 1 }, graph.AdjacencyLists[2]);
+        }
+
+        [Fact]
         public void AddUndirectedEdge_ShouldAddConnectedVertexToAdjacencyLists_WhenExistingKeysSpecified()
         {
             var vertices = new List<int> { 0, 1, 2, 3 };

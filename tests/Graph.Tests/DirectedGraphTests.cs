@@ -50,6 +50,26 @@ namespace Graph.Tests
         }
 
         [Fact]
+        public void RemoveVertex_ShouldRemoveVertexWithAllRelatedEdges_WhenTargetVertexExists()
+        {
+            var vertices = new List<int> { 0, 1, 2 };
+            var edges = new List<KeyValuePair<int, int>>
+            {
+                new KeyValuePair<int, int>(0, 1),
+                new KeyValuePair<int, int>(0, 2),
+                new KeyValuePair<int, int>(2, 0),
+                new KeyValuePair<int, int>(1, 2)
+            };
+            var graph = new DirectedGraph<int>(vertices, edges);
+
+            graph.RemoveVertex(0);
+
+            Assert.DoesNotContain(0, graph.AdjacencyLists);
+            Assert.Equal(new List<int> { 2 }, graph.AdjacencyLists[1]);
+            Assert.Empty(graph.AdjacencyLists[2]);
+        }
+
+        [Fact]
         public void AddDirectedEdge_ShouldAddConnectedVertexToAdjacencyLists_WhenExistingKeysSpecified()
         {
             var vertices = new List<int> { 0, 1, 2, 3 };

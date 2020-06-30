@@ -33,18 +33,6 @@ namespace Graph.Tests
 
         [Theory]
         [MemberData(nameof(GraphBaseTestData.MemberData_AvailableGraphs), MemberType = typeof(GraphBaseTestData))]
-        public void RemoveVertex_ShouldDeleteVertex_WithExistingKey(GraphBase<int> graph)
-        {
-            graph.AddVertex(0);
-            graph.AddVertex(1);
-
-            graph.RemoveVertex(0);
-
-            Assert.DoesNotContain(0, graph.AdjacencyLists);
-        }
-
-        [Theory]
-        [MemberData(nameof(GraphBaseTestData.MemberData_AvailableGraphs), MemberType = typeof(GraphBaseTestData))]
         public void RemoveVertex_ShouldThrowKeyNotFoundException_WhenKeyDoesNotExist(GraphBase<int> graph)
         {
             Assert.Throws<KeyNotFoundException>(() =>

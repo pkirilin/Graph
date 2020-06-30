@@ -115,6 +115,15 @@ namespace Graph.Abstractions
             if (!_adjacencyLists.ContainsKey(vertex))
                 throw new KeyNotFoundException($"Vertex '{vertex}' doesn't exist in graph");
 
+            // Removing target vertex from each adjacency list
+            var adjacencyListsKeys = _adjacencyLists.Keys.ToList();
+            foreach (var key in adjacencyListsKeys)
+            {
+                _adjacencyLists[key] = _adjacencyLists[key]
+                    .Where(v => v.CompareTo(vertex) != 0)
+                    .ToList();
+            }
+
             _adjacencyLists[vertex].Clear();
             _adjacencyLists.Remove(vertex);
         }
