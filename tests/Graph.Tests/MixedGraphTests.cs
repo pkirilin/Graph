@@ -45,13 +45,13 @@ namespace Graph.Tests
                 new KeyValuePair<int, int>(2, 1)
             };
 
-            var undirectedGraph = new MixedGraph<int>(vertices, directedEdges, undirectedEdges);
+            var graph = new MixedGraph<int>(vertices, directedEdges, undirectedEdges);
 
-            Assert.Equal(vertices, undirectedGraph.AdjacencyLists.Keys);
-            Assert.Equal(new List<int> { 1, 2 }, undirectedGraph.AdjacencyLists[0]);
-            Assert.Equal(new List<int> { 3, 2 }, undirectedGraph.AdjacencyLists[1]);
-            Assert.Equal(new List<int> { 1 }, undirectedGraph.AdjacencyLists[2]);
-            Assert.Equal(new List<int> { 1 }, undirectedGraph.AdjacencyLists[3]);
+            Assert.Equal(vertices, graph.AdjacencyLists.Keys);
+            Assert.Equal(new List<int> { 1, 2 }, graph.AdjacencyLists[0]);
+            Assert.Equal(new List<int> { 3, 2 }, graph.AdjacencyLists[1]);
+            Assert.Equal(new List<int> { 1 }, graph.AdjacencyLists[2]);
+            Assert.Equal(new List<int> { 1 }, graph.AdjacencyLists[3]);
         }
 
         [Fact]
