@@ -4,24 +4,27 @@ namespace Graph.Tests.Data
 {
     static class DirectedGraphTestData
     {
+        public static DirectedGraph<int> GenerateTestGraph()
+        {
+            var vertices = new List<int> { 0, 1, 2 };
+            var edges = new List<KeyValuePair<int, int>>()
+            {
+                new KeyValuePair<int, int>(0, 1),
+                new KeyValuePair<int, int>(1, 2),
+                new KeyValuePair<int, int>(2, 0),
+                new KeyValuePair<int, int>(2, 1)
+            };
+
+            return new DirectedGraph<int>(vertices, edges);
+        }
+
         public static IEnumerable<object[]> MemberData_AddDirectedEdge_KeyNotFoundException
         {
             get
             {
-                var vertices = new List<int> { 0, 1, 2 };
-                var edges = new List<KeyValuePair<int, int>>
-                {
-                    new KeyValuePair<int, int>(0, 1),
-                    new KeyValuePair<int, int>(1, 2),
-                    new KeyValuePair<int, int>(2, 0),
-                    new KeyValuePair<int, int>(2, 1)
-                };
-
-                var graph = new DirectedGraph<int>(vertices, edges);
-
-                yield return new object[] { graph, 100, 0 };
-                yield return new object[] { graph, 2, 100 };
-                yield return new object[] { graph, 101, 102 };
+                yield return new object[] { GenerateTestGraph(), 100, 0 };
+                yield return new object[] { GenerateTestGraph(), 2, 100 };
+                yield return new object[] { GenerateTestGraph(), 101, 102 };
             }
         }
 
@@ -29,19 +32,8 @@ namespace Graph.Tests.Data
         {
             get
             {
-                var vertices = new List<int> { 0, 1, 2 };
-                var edges = new List<KeyValuePair<int, int>>
-                {
-                    new KeyValuePair<int, int>(0, 1),
-                    new KeyValuePair<int, int>(1, 2),
-                    new KeyValuePair<int, int>(2, 0),
-                    new KeyValuePair<int, int>(2, 1)
-                };
-
-                var graph = new DirectedGraph<int>(vertices, edges);
-
-                yield return new object[] { graph, 0, 0 };
-                yield return new object[] { graph, 1, 2 };
+                yield return new object[] { GenerateTestGraph(), 0, 0 };
+                yield return new object[] { GenerateTestGraph(), 1, 2 };
             }
         }
 
@@ -49,20 +41,38 @@ namespace Graph.Tests.Data
         {
             get
             {
-                var vertices = new List<int> { 0, 1, 2 };
-                var edges = new List<KeyValuePair<int, int>>
+                yield return new object[] { GenerateTestGraph(), 100, 0 };
+                yield return new object[] { GenerateTestGraph(), 2, 100 };
+                yield return new object[] { GenerateTestGraph(), 101, 102 };
+            }
+        }
+
+        public static IEnumerable<object[]> MemberData_RemoveDirectedEdge
+        {
+            get
+            {
+                var expectedAdjacencyLists1 = new Dictionary<int, IReadOnlyList<int>>()
                 {
-                    new KeyValuePair<int, int>(0, 1),
-                    new KeyValuePair<int, int>(1, 2),
-                    new KeyValuePair<int, int>(2, 0),
-                    new KeyValuePair<int, int>(2, 1)
+                    [0] = new List<int>() { },
+                    [1] = new List<int>() { 2 },
+                    [2] = new List<int>() { 0, 1 },
+                };
+                var expectedAdjacencyLists2 = new Dictionary<int, IReadOnlyList<int>>()
+                {
+                    [0] = new List<int>() { 1 },
+                    [1] = new List<int>() { 2 },
+                    [2] = new List<int>() { 0 },
+                };
+                var expectedAdjacencyLists3 = new Dictionary<int, IReadOnlyList<int>>()
+                {
+                    [0] = new List<int>() { 1 },
+                    [1] = new List<int>() { 2 },
+                    [2] = new List<int>() { 0, 1 },
                 };
 
-                var graph = new DirectedGraph<int>(vertices, edges);
-
-                yield return new object[] { graph, 100, 0 };
-                yield return new object[] { graph, 2, 100 };
-                yield return new object[] { graph, 101, 102 };
+                yield return new object[] { GenerateTestGraph(), 0, 1, expectedAdjacencyLists1 };
+                yield return new object[] { GenerateTestGraph(), 2, 1, expectedAdjacencyLists2 };
+                yield return new object[] { GenerateTestGraph(), 1, 0, expectedAdjacencyLists3 };
             }
         }
     }

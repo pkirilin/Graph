@@ -4,23 +4,26 @@ namespace Graph.Tests.Data
 {
     static class UndirectedGraphTestData
     {
+        public static UndirectedGraph<int> GenerateTestGraph()
+        {
+            var vertices = new List<int> { 0, 1, 2, 3 };
+            var edges = new List<KeyValuePair<int, int>>()
+            {
+                new KeyValuePair<int, int>(0, 1),
+                new KeyValuePair<int, int>(0, 2),
+                new KeyValuePair<int, int>(1, 2)
+            };
+
+            return new UndirectedGraph<int>(vertices, edges);
+        }
+
         public static IEnumerable<object[]> MemberData_AddUndirectedEdge_KeyNotFoundException
         {
             get
             {
-                var vertices = new List<int> { 0, 1, 2 };
-                var edges = new List<KeyValuePair<int, int>>()
-                {
-                    new KeyValuePair<int, int>(0, 1),
-                    new KeyValuePair<int, int>(0, 2),
-                    new KeyValuePair<int, int>(1, 2)
-                };
-
-                var graph = new UndirectedGraph<int>(vertices, edges);
-
-                yield return new object[] { graph, 100, 0 };
-                yield return new object[] { graph, 1, 100 };
-                yield return new object[] { graph, 101, 102 };
+                yield return new object[] { GenerateTestGraph(), 100, 0 };
+                yield return new object[] { GenerateTestGraph(), 1, 100 };
+                yield return new object[] { GenerateTestGraph(), 101, 102 };
             }
         }
 
@@ -28,19 +31,9 @@ namespace Graph.Tests.Data
         {
             get
             {
-                var vertices = new List<int> { 0, 1, 2 };
-                var edges = new List<KeyValuePair<int, int>>()
-                {
-                    new KeyValuePair<int, int>(0, 1),
-                    new KeyValuePair<int, int>(0, 2),
-                    new KeyValuePair<int, int>(1, 2)
-                };
-
-                var graph = new UndirectedGraph<int>(vertices, edges);
-
-                yield return new object[] { graph, 0, 0 };
-                yield return new object[] { graph, 1, 2 };
-                yield return new object[] { graph, 2, 1 };
+                yield return new object[] { GenerateTestGraph(), 0, 0 };
+                yield return new object[] { GenerateTestGraph(), 1, 2 };
+                yield return new object[] { GenerateTestGraph(), 2, 1 };
             }
         }
 
@@ -48,19 +41,34 @@ namespace Graph.Tests.Data
         {
             get
             {
-                var vertices = new List<int> { 0, 1, 2 };
-                var edges = new List<KeyValuePair<int, int>>()
+                yield return new object[] { GenerateTestGraph(), 100, 0 };
+                yield return new object[] { GenerateTestGraph(), 1, 100 };
+                yield return new object[] { GenerateTestGraph(), 101, 102 };
+            }
+        }
+
+        public static IEnumerable<object[]> MemberData_RemoveUndirectedEdge
+        {
+            get
+            {
+                var expectedAdjacencyLists1 = new Dictionary<int, IReadOnlyList<int>>()
                 {
-                    new KeyValuePair<int, int>(0, 1),
-                    new KeyValuePair<int, int>(0, 2),
-                    new KeyValuePair<int, int>(1, 2)
+                    [0] = new List<int>() { 2 },
+                    [1] = new List<int>() { 2 },
+                    [2] = new List<int>() { 0, 1 },
+                    [3] = new List<int>() { },
                 };
 
-                var graph = new UndirectedGraph<int>(vertices, edges);
+                var expectedAdjacencyLists2 = new Dictionary<int, IReadOnlyList<int>>()
+                {
+                    [0] = new List<int>() { 1, 2 },
+                    [1] = new List<int>() { 0, 2 },
+                    [2] = new List<int>() { 0, 1 },
+                    [3] = new List<int>() { },
+                };
 
-                yield return new object[] { graph, 100, 0 };
-                yield return new object[] { graph, 1, 100 };
-                yield return new object[] { graph, 101, 102 };
+                yield return new object[] { GenerateTestGraph(), 0, 1, expectedAdjacencyLists1 };
+                yield return new object[] { GenerateTestGraph(), 1, 3, expectedAdjacencyLists2 };
             }
         }
     }

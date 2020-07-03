@@ -40,13 +40,16 @@ namespace Graph.Tests
                 new KeyValuePair<int, int>(1, 2),
                 new KeyValuePair<int, int>(0, 2)
             };
+            var expectedAdjacencyLists = new Dictionary<int, IReadOnlyList<int>>()
+            {
+                [0] = new List<int>() { 1, 2 },
+                [1] = new List<int>() { 0, 2 },
+                [2] = new List<int>() { 1, 0 },
+            };
 
             var graph = new UndirectedWeightedGraph<int, int>(vertices, edges);
 
-            Assert.Equal(vertices, graph.AdjacencyLists.Keys);
-            Assert.Equal(new List<int> { 1, 2 }, graph.AdjacencyLists[0]);
-            Assert.Equal(new List<int> { 0, 2 }, graph.AdjacencyLists[1]);
-            Assert.Equal(new List<int> { 1, 0 }, graph.AdjacencyLists[2]);
+            Assert.Equal(expectedAdjacencyLists, graph.AdjacencyLists);
             Assert.All(edges, edge =>
             {
                 Assert.Equal(default, graph.Weights[edge]);
@@ -66,16 +69,26 @@ namespace Graph.Tests
                 [edge1] = 1,
                 [edge3] = 3,
             };
+            var expectedAdjacencyLists = new Dictionary<int, IReadOnlyList<int>>()
+            {
+                [0] = new List<int>() { 1, 2 },
+                [1] = new List<int>() { 0, 2 },
+                [2] = new List<int>() { 1, 0 },
+            };
+            var expectedWeights = new Dictionary<KeyValuePair<int, int>, int>()
+            {
+                [new KeyValuePair<int, int>(0, 1)] = 1,
+                [new KeyValuePair<int, int>(0, 2)] = 3,
+                [new KeyValuePair<int, int>(1, 2)] = default,
+                [new KeyValuePair<int, int>(1, 0)] = 1,
+                [new KeyValuePair<int, int>(2, 0)] = 3,
+                [new KeyValuePair<int, int>(2, 1)] = default,
+            };
 
             var graph = new UndirectedWeightedGraph<int, int>(vertices, edges, weights);
 
-            Assert.Equal(vertices, graph.AdjacencyLists.Keys);
-            Assert.Equal(new List<int> { 1, 2 }, graph.AdjacencyLists[0]);
-            Assert.Equal(new List<int> { 0, 2 }, graph.AdjacencyLists[1]);
-            Assert.Equal(new List<int> { 1, 0 }, graph.AdjacencyLists[2]);
-            Assert.Equal(1, graph.Weights[edge1]);
-            Assert.Equal(default, graph.Weights[edge2]);
-            Assert.Equal(3, graph.Weights[edge3]);
+            Assert.Equal(expectedAdjacencyLists, graph.AdjacencyLists);
+            Assert.Equal(expectedWeights, graph.Weights);
         }
 
         [Fact]
@@ -102,55 +115,55 @@ namespace Graph.Tests
         [Fact]
         public void RemoveVertex_ShouldRemoveVertexWithAllRelatedEdgesAndWeights_WhenTargetVertexExists()
         {
-            var vertices = new List<int> { 0, 1, 2 };
-            var edge1 = new KeyValuePair<int, int>(0, 1);
-            var edge2 = new KeyValuePair<int, int>(0, 2);
-            var edge3 = new KeyValuePair<int, int>(1, 2);
-            var edges = new List<KeyValuePair<int, int>> { edge1, edge2, edge3 };
-            var weights = new Dictionary<KeyValuePair<int, int>, int>()
+            var graph = UndirectedWeightedGraphTestData.GenerateTestGraph();
+            var expectedAdjacencyLists = new Dictionary<int, IReadOnlyList<int>>()
             {
-                [edge1] = 1,
-                [edge2] = 2,
-                [edge3] = 3
+                [1] = new List<int>() { 2 },
+                [2] = new List<int>() { 1 },
+                [3] = new List<int>(),
             };
-            var graph = new UndirectedWeightedGraph<int, int>(vertices, edges, weights);
+            var expectedWeights = new Dictionary<KeyValuePair<int, int>, int>()
+            {
+                [new KeyValuePair<int, int>(1, 2)] = 2,
+                [new KeyValuePair<int, int>(2, 1)] = 2,
+            };
 
             graph.RemoveVertex(0);
 
-            Assert.DoesNotContain(0, graph.AdjacencyLists);
-            Assert.Equal(new List<int> { 2 }, graph.AdjacencyLists[1]);
-            Assert.Equal(new List<int> { 1 }, graph.AdjacencyLists[2]);
-            Assert.Equal(new Dictionary<KeyValuePair<int, int>, int>()
-            {
-                [new KeyValuePair<int, int>(1, 2)] = 3,
-                [new KeyValuePair<int, int>(2, 1)] = 3
-            }, graph.Weights);
+            Assert.Equal(expectedAdjacencyLists, graph.AdjacencyLists);
+            Assert.Equal(expectedWeights, graph.Weights);
         }
 
         [Fact]
         public void AddUndirectedEdge_ShouldAddConnectedVertexToAdjacencyListsWithWeight_WhenExistingKeysSpecified()
         {
-            var vertices = new List<int> { 0, 1, 2, 3 };
-            var edge1 = new KeyValuePair<int, int>(0, 1);
-            var edges = new List<KeyValuePair<int, int>> { edge1 };
-            var graph = new UndirectedWeightedGraph<int, int>(vertices, edges);
-
-            graph.AddUndirectedEdge(2, 1);
-            graph.AddUndirectedEdge(0, 3, 10);
-
-            Assert.Equal(new List<int> { 1, 3 }, graph.AdjacencyLists[0]);
-            Assert.Equal(new List<int> { 0, 2 }, graph.AdjacencyLists[1]);
-            Assert.Equal(new List<int> { 1 }, graph.AdjacencyLists[2]);
-            Assert.Equal(new List<int> { 0 }, graph.AdjacencyLists[3]);
-            Assert.Equal(new Dictionary<KeyValuePair<int, int>, int>()
+            var graph = UndirectedWeightedGraphTestData.GenerateTestGraph();
+            var expectedAdjacencyLists = new Dictionary<int, IReadOnlyList<int>>()
             {
-                [new KeyValuePair<int, int>(0, 1)] = default,
-                [new KeyValuePair<int, int>(1, 0)] = default,
-                [new KeyValuePair<int, int>(2, 1)] = default,
-                [new KeyValuePair<int, int>(1, 2)] = default,
-                [new KeyValuePair<int, int>(0, 3)] = 10,
-                [new KeyValuePair<int, int>(3, 0)] = 10,
-            }, graph.Weights);
+                [0] = new List<int>() { 1, 2 },
+                [1] = new List<int>() { 0, 2, 3 },
+                [2] = new List<int>() { 0, 1, 3 },
+                [3] = new List<int>() { 2, 1 },
+            };
+            var expectedWeights = new Dictionary<KeyValuePair<int, int>, int>()
+            {
+                [new KeyValuePair<int, int>(0, 1)] = 1,
+                [new KeyValuePair<int, int>(1, 0)] = 1,
+                [new KeyValuePair<int, int>(0, 2)] = 3,
+                [new KeyValuePair<int, int>(2, 0)] = 3,
+                [new KeyValuePair<int, int>(1, 2)] = 2,
+                [new KeyValuePair<int, int>(2, 1)] = 2,
+                [new KeyValuePair<int, int>(1, 3)] = 4,
+                [new KeyValuePair<int, int>(3, 1)] = 4,
+                [new KeyValuePair<int, int>(2, 3)] = default,
+                [new KeyValuePair<int, int>(3, 2)] = default,
+            };
+
+            graph.AddUndirectedEdge(2, 3);
+            graph.AddUndirectedEdge(1, 3, 4);
+
+            Assert.Equal(expectedAdjacencyLists, graph.AdjacencyLists);
+            Assert.Equal(expectedWeights, graph.Weights);
         }
 
         [Theory]
@@ -173,32 +186,19 @@ namespace Graph.Tests
             });
         }
 
-        [Fact]
-        public void RemoveUndirectedEdge_ShouldRemoveConnectedVertexFromAdjacencyLists_WhenExistingKeysSpecified()
+        [Theory]
+        [MemberData(nameof(UndirectedWeightedGraphTestData.MemberData_RemoveUndirectedEdge), MemberType = typeof(UndirectedWeightedGraphTestData))]
+        public void RemoveUndirectedEdge_ShouldRemoveConnectedVertexFromAdjacencyLists_WhenExistingKeysSpecified(
+            UndirectedWeightedGraph<int, int> graph,
+            int sourceToRemove,
+            int destinationToRemove,
+            Dictionary<int, IReadOnlyList<int>> expectedAdjacencyLists,
+            Dictionary<KeyValuePair<int, int>, int> expectedWeights)
         {
-            var vertices = new List<int> { 0, 1, 2 };
-            var edge1 = new KeyValuePair<int, int>(0, 1);
-            var edge2 = new KeyValuePair<int, int>(1, 2);
-            var edges = new List<KeyValuePair<int, int>> { edge1, edge2 };
-            var weights = new Dictionary<KeyValuePair<int, int>, int>()
-            {
-                [edge1] = 1,
-                [edge2] = 2,
-            };
-            var graph = new UndirectedWeightedGraph<int, int>(vertices, edges, weights);
+            graph.RemoveUndirectedEdge(sourceToRemove, destinationToRemove);
 
-            graph.RemoveUndirectedEdge(1, 2);
-            // Removing not existing connection should not affect adjacencyLists
-            graph.RemoveUndirectedEdge(0, 2);
-
-            Assert.Equal(new List<int> { 1 }, graph.AdjacencyLists[0]);
-            Assert.Equal(new List<int> { 0 }, graph.AdjacencyLists[1]);
-            Assert.Empty(graph.AdjacencyLists[2]);
-            Assert.Equal(new Dictionary<KeyValuePair<int, int>, int>()
-            {
-                [new KeyValuePair<int, int>(0, 1)] = 1,
-                [new KeyValuePair<int, int>(1, 0)] = 1,
-            }, graph.Weights);
+            Assert.Equal(expectedAdjacencyLists, graph.AdjacencyLists);
+            Assert.Equal(expectedWeights, graph.Weights);
         }
 
         [Theory]

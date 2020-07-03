@@ -40,50 +40,49 @@ namespace Graph.Tests
                 new KeyValuePair<int, int>(0, 2),
                 new KeyValuePair<int, int>(1, 2)
             };
+            var expectedAdjacencyLists = new Dictionary<int, IReadOnlyList<int>>()
+            {
+                [0] = new List<int>() { 1, 2 },
+                [1] = new List<int>() { 0, 2 },
+                [2] = new List<int>() { 0, 1 },
+            };
 
             var graph = new UndirectedGraph<int>(vertices, edges);
 
-            Assert.Equal(vertices, graph.AdjacencyLists.Keys);
-            Assert.Equal(new List<int> { 1, 2 }, graph.AdjacencyLists[0]);
-            Assert.Equal(new List<int> { 0, 2 }, graph.AdjacencyLists[1]);
-            Assert.Equal(new List<int> { 0, 1 }, graph.AdjacencyLists[2]);
+            Assert.Equal(expectedAdjacencyLists, graph.AdjacencyLists);
         }
 
         [Fact]
         public void RemoveVertex_ShouldRemoveVertexWithAllRelatedEdges_WhenTargetVertexExists()
         {
-            var vertices = new List<int> { 0, 1, 2 };
-            var edges = new List<KeyValuePair<int, int>>
+            var graph = UndirectedGraphTestData.GenerateTestGraph();
+            var expectedAdjacencyLists = new Dictionary<int, IReadOnlyList<int>>()
             {
-                new KeyValuePair<int, int>(0, 1),
-                new KeyValuePair<int, int>(0, 2),
-                new KeyValuePair<int, int>(1, 2)
+                [1] = new List<int>() { 2 },
+                [2] = new List<int>() { 1 },
+                [3] = new List<int>(),
             };
-            var graph = new UndirectedGraph<int>(vertices, edges);
 
             graph.RemoveVertex(0);
 
-            Assert.DoesNotContain(0, graph.AdjacencyLists);
-            Assert.Equal(new List<int> { 2 }, graph.AdjacencyLists[1]);
-            Assert.Equal(new List<int> { 1 }, graph.AdjacencyLists[2]);
+            Assert.Equal(expectedAdjacencyLists, graph.AdjacencyLists);
         }
 
         [Fact]
         public void AddUndirectedEdge_ShouldAddConnectedVertexToAdjacencyLists_WhenExistingKeysSpecified()
         {
-            var vertices = new List<int> { 0, 1, 2, 3 };
-            var edges = new List<KeyValuePair<int, int>>
+            var graph = UndirectedGraphTestData.GenerateTestGraph();
+            var expectedAdjacencyLists = new Dictionary<int, IReadOnlyList<int>>()
             {
-                new KeyValuePair<int, int>(0, 1),
-                new KeyValuePair<int, int>(2, 1),
-                new KeyValuePair<int, int>(0, 3)
+                [0] = new List<int>() { 1, 2 },
+                [1] = new List<int>() { 0, 2, 3 },
+                [2] = new List<int>() { 0, 1 },
+                [3] = new List<int>() { 1 },
             };
-            var graph = new UndirectedGraph<int>(vertices, edges);
 
-            Assert.Equal(new List<int> { 1, 3 }, graph.AdjacencyLists[0]);
-            Assert.Equal(new List<int> { 0, 2 }, graph.AdjacencyLists[1]);
-            Assert.Equal(new List<int> { 1 }, graph.AdjacencyLists[2]);
-            Assert.Equal(new List<int> { 0 }, graph.AdjacencyLists[3]);
+            graph.AddUndirectedEdge(3, 1);
+
+            Assert.Equal(expectedAdjacencyLists, graph.AdjacencyLists);
         }
 
         [Theory]
@@ -106,24 +105,17 @@ namespace Graph.Tests
             });
         }
 
-        [Fact]
-        public void RemoveUndirectedEdge_ShouldRemoveConnectedVertexFromAdjacencyLists_WhenExistingKeysSpecified()
+        [Theory]
+        [MemberData(nameof(UndirectedGraphTestData.MemberData_RemoveUndirectedEdge), MemberType = typeof(UndirectedGraphTestData))]
+        public void RemoveUndirectedEdge_ShouldRemoveConnectedVertexFromAdjacencyLists_WhenExistingKeysSpecified(
+            UndirectedGraph<int> graph,
+            int sourceToRemove,
+            int destinationToRemove,
+            Dictionary<int, IReadOnlyList<int>> expectedAdjacencyLists)
         {
-            var vertices = new List<int> { 0, 1, 2 };
-            var edges = new List<KeyValuePair<int, int>>
-            {
-                new KeyValuePair<int, int>(0, 1),
-                new KeyValuePair<int, int>(1, 2)
-            };
-            var graph = new UndirectedGraph<int>(vertices, edges);
+            graph.RemoveUndirectedEdge(sourceToRemove, destinationToRemove);
 
-            graph.RemoveUndirectedEdge(1, 2);
-            // Removing not existing connection should not affect adjacencyLists
-            graph.RemoveUndirectedEdge(0, 2);
-
-            Assert.Equal(new List<int> { 1 }, graph.AdjacencyLists[0]);
-            Assert.Equal(new List<int> { 0 }, graph.AdjacencyLists[1]);
-            Assert.Equal(new List<int> { }, graph.AdjacencyLists[2]);
+            Assert.Equal(expectedAdjacencyLists, graph.AdjacencyLists);
         }
 
         [Theory]

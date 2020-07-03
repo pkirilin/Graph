@@ -40,54 +40,47 @@ namespace Graph.Tests
                 new KeyValuePair<int, int>(0, 2),
                 new KeyValuePair<int, int>(2, 0)
             };
+            var expectedAdjacencyLists = new Dictionary<int, IReadOnlyList<int>>()
+            {
+                [0] = new List<int>() { 1, 2 },
+                [1] = new List<int>() { },
+                [2] = new List<int>() { 0 },
+            };
 
             var graph = new DirectedGraph<int>(vertices, edges);
 
-            Assert.Equal(vertices, graph.AdjacencyLists.Keys);
-            Assert.Equal(new List<int> { 1, 2 }, graph.AdjacencyLists[0]);
-            Assert.Empty(graph.AdjacencyLists[1]);
-            Assert.Equal(new List<int> { 0 }, graph.AdjacencyLists[2]);
+            Assert.Equal(expectedAdjacencyLists, graph.AdjacencyLists);
         }
 
         [Fact]
         public void RemoveVertex_ShouldRemoveVertexWithAllRelatedEdges_WhenTargetVertexExists()
         {
-            var vertices = new List<int> { 0, 1, 2 };
-            var edges = new List<KeyValuePair<int, int>>
+            var graph = DirectedGraphTestData.GenerateTestGraph();
+            var expectedAdjacencyLists = new Dictionary<int, IReadOnlyList<int>>()
             {
-                new KeyValuePair<int, int>(0, 1),
-                new KeyValuePair<int, int>(0, 2),
-                new KeyValuePair<int, int>(2, 0),
-                new KeyValuePair<int, int>(1, 2)
+                [1] = new List<int>() { 2 },
+                [2] = new List<int>() { 1 },
             };
-            var graph = new DirectedGraph<int>(vertices, edges);
 
             graph.RemoveVertex(0);
 
-            Assert.DoesNotContain(0, graph.AdjacencyLists);
-            Assert.Equal(new List<int> { 2 }, graph.AdjacencyLists[1]);
-            Assert.Empty(graph.AdjacencyLists[2]);
+            Assert.Equal(expectedAdjacencyLists, graph.AdjacencyLists);
         }
 
         [Fact]
         public void AddDirectedEdge_ShouldAddConnectedVertexToAdjacencyLists_WhenExistingKeysSpecified()
         {
-            var vertices = new List<int> { 0, 1, 2, 3 };
-            var edges = new List<KeyValuePair<int, int>>
+            var graph = DirectedGraphTestData.GenerateTestGraph();
+            var expectedAdjacencyLists = new Dictionary<int, IReadOnlyList<int>>()
             {
-                new KeyValuePair<int, int>(0, 1),
-                new KeyValuePair<int, int>(1, 2),
-                new KeyValuePair<int, int>(2, 0),
-                new KeyValuePair<int, int>(2, 1)
+                [0] = new List<int>() { 1 },
+                [1] = new List<int>() { 2, 0 },
+                [2] = new List<int>() { 0, 1 },
             };
-            var graph = new DirectedGraph<int>(vertices, edges);
 
-            graph.AddDirectedEdge(3, 0);
+            graph.AddDirectedEdge(1, 0);
 
-            Assert.Equal(new List<int> { 1 }, graph.AdjacencyLists[0]);
-            Assert.Equal(new List<int> { 2 }, graph.AdjacencyLists[1]);
-            Assert.Equal(new List<int> { 0, 1 }, graph.AdjacencyLists[2]);
-            Assert.Equal(new List<int> { 0 }, graph.AdjacencyLists[3]);
+            Assert.Equal(expectedAdjacencyLists, graph.AdjacencyLists);
         }
 
         [Theory]
@@ -110,27 +103,17 @@ namespace Graph.Tests
             });
         }
 
-        [Fact]
-        public void RemoveDirectedEdge_ShouldRemoveConnectedVertexFromAdjacencyLists_WhenExistingKeysSpecified()
+        [Theory]
+        [MemberData(nameof(DirectedGraphTestData.MemberData_RemoveDirectedEdge), MemberType = typeof(DirectedGraphTestData))]
+        public void RemoveDirectedEdge_ShouldRemoveConnectedVertexFromAdjacencyLists_WhenExistingKeysSpecified(
+            DirectedGraph<int> graph,
+            int sourceToRemove,
+            int destinationToRemove,
+            Dictionary<int, IReadOnlyList<int>> expectedAdjacencyLists)
         {
-            var vertices = new List<int> { 0, 1, 2 };
-            var edges = new List<KeyValuePair<int, int>>
-            {
-                new KeyValuePair<int, int>(0, 1),
-                new KeyValuePair<int, int>(1, 2),
-                new KeyValuePair<int, int>(2, 0),
-                new KeyValuePair<int, int>(2, 1)
-            };
-            var graph = new DirectedGraph<int>(vertices, edges);
+            graph.RemoveDirectedEdge(sourceToRemove, destinationToRemove);
 
-            graph.RemoveDirectedEdge(0, 1);
-            graph.RemoveDirectedEdge(2, 0);
-            // Removing not existing connection should not affect adjacencyLists
-            graph.RemoveDirectedEdge(1, 0);
-
-            Assert.Equal(new List<int> { }, graph.AdjacencyLists[0]);
-            Assert.Equal(new List<int> { 2 }, graph.AdjacencyLists[1]);
-            Assert.Equal(new List<int> { 1 }, graph.AdjacencyLists[2]);
+            Assert.Equal(expectedAdjacencyLists, graph.AdjacencyLists);
         }
 
         [Theory]
