@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Graph.Structures;
+using System.Collections.Generic;
 
 namespace Graph.Tests.Data
 {
@@ -7,14 +8,14 @@ namespace Graph.Tests.Data
         public static MixedGraph<int> GenerateTestGraph()
         {
             var vertices = new List<int> { 0, 1, 2, 3 };
-            var directedEdges = new List<KeyValuePair<int, int>>
+            var directedEdges = new List<Edge<int>>
             {
-                new KeyValuePair<int, int>(0, 1),
+                new Edge<int>(0, 1),
             };
-            var undirectedEdges = new List<KeyValuePair<int, int>>
+            var undirectedEdges = new List<Edge<int>>
             {
-                new KeyValuePair<int, int>(1, 2),
-                new KeyValuePair<int, int>(0, 2)
+                new Edge<int>(1, 2),
+                new Edge<int>(0, 2)
             };
 
             return new MixedGraph<int>(vertices, directedEdges, undirectedEdges);

@@ -1,4 +1,5 @@
 ﻿using Graph.Abstractions;
+using Graph.Structures;
 using System;
 using System.Collections.Generic;
 
@@ -31,10 +32,10 @@ namespace Graph
         /// </summary>
         /// <param name="vertices">Initial vertices</param>
         /// <param name="edges">Initial edges represented as a pair of vertices</param>
-        public DirectedGraph(IEnumerable<TVertex> vertices, IEnumerable<KeyValuePair<TVertex, TVertex>> edges) : this(vertices)
+        public DirectedGraph(IEnumerable<TVertex> vertices, IEnumerable<Edge<TVertex>> edges) : this(vertices)
         {
             foreach (var edge in edges)
-                AddDirectedEdge(edge.Key, edge.Value);
+                AddDirectedEdge(edge.Source, edge.Destination);
         }
 
         #region IDirectedGraph<TVertex>

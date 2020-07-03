@@ -1,4 +1,5 @@
-﻿using Graph.Tests.Data;
+﻿using Graph.Structures;
+using Graph.Tests.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,15 +36,15 @@ namespace Graph.Tests
         public void Ctor_ShouldInitializeAdjacencyListsWithVerticesAndEdgesWithDefaultWeights()
         {
             var vertices = new List<int> { 0, 1, 2, 3 };
-            var directedEdges = new List<KeyValuePair<int, int>>
+            var directedEdges = new List<Edge<int>>
             {
-                new KeyValuePair<int, int>(0, 1),
-                new KeyValuePair<int, int>(0, 2)
+                new Edge<int>(0, 1),
+                new Edge<int>(0, 2)
             };
-            var undirectedEdges = new List<KeyValuePair<int, int>>
+            var undirectedEdges = new List<Edge<int>>
             {
-                new KeyValuePair<int, int>(1, 3),
-                new KeyValuePair<int, int>(2, 1)
+                new Edge<int>(1, 3),
+                new Edge<int>(2, 1)
             };
             var edges = directedEdges.Concat(undirectedEdges);
             var expectedAdjacencyLists = new Dictionary<int, IReadOnlyList<int>>()
@@ -67,18 +68,18 @@ namespace Graph.Tests
         public void Ctor_ShouldInitializeAdjacencyListsWithVerticesAndEdgesWithWeights()
         {
             var vertices = new List<int> { 0, 1, 2, 3 };
-            var edge1 = new KeyValuePair<int, int>(0, 1);
-            var edge2 = new KeyValuePair<int, int>(0, 2);
-            var edge3 = new KeyValuePair<int, int>(1, 3);
-            var edge4 = new KeyValuePair<int, int>(2, 1);
-            var directedEdges = new List<KeyValuePair<int, int>> { edge1, edge2 };
-            var undirectedEdges = new List<KeyValuePair<int, int>> { edge3, edge4 };
-            var directedWeights = new Dictionary<KeyValuePair<int, int>, int>()
+            var edge1 = new Edge<int>(0, 1);
+            var edge2 = new Edge<int>(0, 2);
+            var edge3 = new Edge<int>(1, 3);
+            var edge4 = new Edge<int>(2, 1);
+            var directedEdges = new List<Edge<int>> { edge1, edge2 };
+            var undirectedEdges = new List<Edge<int>> { edge3, edge4 };
+            var directedWeights = new Dictionary<Edge<int>, int>()
             {
                 [edge1] = 1,
                 [edge2] = 2,
             };
-            var undirectedWeights = new Dictionary<KeyValuePair<int, int>, int>()
+            var undirectedWeights = new Dictionary<Edge<int>, int>()
             {
                 [edge3] = 3,
                 [edge4] = 4,
@@ -90,14 +91,14 @@ namespace Graph.Tests
                 [2] = new List<int>() { 1 },
                 [3] = new List<int>() { 1 },
             };
-            var expectedWeights = new Dictionary<KeyValuePair<int, int>, int>()
+            var expectedWeights = new Dictionary<Edge<int>, int>()
             {
                 [edge1] = 1,
                 [edge2] = 2,
                 [edge3] = 3,
                 [edge4] = 4,
-                [new KeyValuePair<int, int>(3, 1)] = 3,
-                [new KeyValuePair<int, int>(1, 2)] = 4,
+                [new Edge<int>(3, 1)] = 3,
+                [new Edge<int>(1, 2)] = 4,
             };
 
             var graph = new MixedWeightedGraph<int, int>(vertices, directedEdges, undirectedEdges, directedWeights, undirectedWeights);
@@ -116,10 +117,10 @@ namespace Graph.Tests
                 [2] = new List<int>() { 1 },
                 [3] = new List<int>(),
             };
-            var expectedWeights = new Dictionary<KeyValuePair<int, int>, int>()
+            var expectedWeights = new Dictionary<Edge<int>, int>()
             {
-                [new KeyValuePair<int, int>(1, 2)] = 2,
-                [new KeyValuePair<int, int>(2, 1)] = 2,
+                [new Edge<int>(1, 2)] = 2,
+                [new Edge<int>(2, 1)] = 2,
             };
 
             graph.RemoveVertex(0);
@@ -139,15 +140,15 @@ namespace Graph.Tests
                 [2] = new List<int>() { 1, 0 },
                 [3] = new List<int>() { 1 },
             };
-            var expectedWeights = new Dictionary<KeyValuePair<int, int>, int>()
+            var expectedWeights = new Dictionary<Edge<int>, int>()
             {
-                [new KeyValuePair<int, int>(0, 1)] = 1,
-                [new KeyValuePair<int, int>(1, 0)] = default,
-                [new KeyValuePair<int, int>(1, 2)] = 2,
-                [new KeyValuePair<int, int>(2, 1)] = 2,
-                [new KeyValuePair<int, int>(0, 2)] = 3,
-                [new KeyValuePair<int, int>(2, 0)] = 3,
-                [new KeyValuePair<int, int>(3, 1)] = 4,
+                [new Edge<int>(0, 1)] = 1,
+                [new Edge<int>(1, 0)] = default,
+                [new Edge<int>(1, 2)] = 2,
+                [new Edge<int>(2, 1)] = 2,
+                [new Edge<int>(0, 2)] = 3,
+                [new Edge<int>(2, 0)] = 3,
+                [new Edge<int>(3, 1)] = 4,
             };
 
             graph.AddDirectedEdge(1, 0);
@@ -190,12 +191,12 @@ namespace Graph.Tests
                 [2] = new List<int>() { 1, 0 },
                 [3] = new List<int>() { },
             };
-            var expectedWeights = new Dictionary<KeyValuePair<int, int>, int>()
+            var expectedWeights = new Dictionary<Edge<int>, int>()
             {
-                [new KeyValuePair<int, int>(1, 2)] = 2,
-                [new KeyValuePair<int, int>(2, 1)] = 2,
-                [new KeyValuePair<int, int>(0, 2)] = 3,
-                [new KeyValuePair<int, int>(2, 0)] = 3,
+                [new Edge<int>(1, 2)] = 2,
+                [new Edge<int>(2, 1)] = 2,
+                [new Edge<int>(0, 2)] = 3,
+                [new Edge<int>(2, 0)] = 3,
             };
 
             graph.RemoveDirectedEdge(0, 1);
@@ -225,18 +226,18 @@ namespace Graph.Tests
                 [2] = new List<int>() { 1, 0, 3 },
                 [3] = new List<int>() { 1, 2 },
             };
-            var expectedWeights = new Dictionary<KeyValuePair<int, int>, int>()
+            var expectedWeights = new Dictionary<Edge<int>, int>()
             {
-                [new KeyValuePair<int, int>(0, 1)] = 1,
-                [new KeyValuePair<int, int>(1, 2)] = 2,
-                [new KeyValuePair<int, int>(2, 1)] = 2,
-                [new KeyValuePair<int, int>(0, 2)] = 3,
-                [new KeyValuePair<int, int>(2, 0)] = 3,
-                [new KeyValuePair<int, int>(3, 1)] = 4,
-                [new KeyValuePair<int, int>(1, 3)] = default,
-                [new KeyValuePair<int, int>(3, 1)] = default,
-                [new KeyValuePair<int, int>(2, 3)] = 4,
-                [new KeyValuePair<int, int>(3, 2)] = 4,
+                [new Edge<int>(0, 1)] = 1,
+                [new Edge<int>(1, 2)] = 2,
+                [new Edge<int>(2, 1)] = 2,
+                [new Edge<int>(0, 2)] = 3,
+                [new Edge<int>(2, 0)] = 3,
+                [new Edge<int>(3, 1)] = 4,
+                [new Edge<int>(1, 3)] = default,
+                [new Edge<int>(3, 1)] = default,
+                [new Edge<int>(2, 3)] = 4,
+                [new Edge<int>(3, 2)] = 4,
             };
 
             graph.AddUndirectedEdge(1, 3);
@@ -277,11 +278,11 @@ namespace Graph.Tests
                 [2] = new List<int>() { 0 },
                 [3] = new List<int>() { },
             };
-            var expectedWeights = new Dictionary<KeyValuePair<int, int>, int>()
+            var expectedWeights = new Dictionary<Edge<int>, int>()
             {
-                [new KeyValuePair<int, int>(0, 1)] = 1,
-                [new KeyValuePair<int, int>(0, 2)] = 3,
-                [new KeyValuePair<int, int>(2, 0)] = 3,
+                [new Edge<int>(0, 1)] = 1,
+                [new Edge<int>(0, 2)] = 3,
+                [new Edge<int>(2, 0)] = 3,
             };
 
             graph.RemoveUndirectedEdge(1, 2);

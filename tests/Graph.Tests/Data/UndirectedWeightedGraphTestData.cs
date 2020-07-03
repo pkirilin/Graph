@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Graph.Structures;
+using System.Collections.Generic;
 
 namespace Graph.Tests.Data
 {
@@ -7,20 +8,20 @@ namespace Graph.Tests.Data
         public static UndirectedWeightedGraph<int, int> GenerateTestGraph()
         {
             var vertices = new List<int> { 0, 1, 2, 3 };
-            var edges = new List<KeyValuePair<int, int>>()
+            var edges = new List<Edge<int>>()
             {
-                new KeyValuePair<int, int>(0, 1),
-                new KeyValuePair<int, int>(0, 2),
-                new KeyValuePair<int, int>(1, 2)
+                new Edge<int>(0, 1),
+                new Edge<int>(0, 2),
+                new Edge<int>(1, 2)
             };
-            var weights = new Dictionary<KeyValuePair<int, int>, int>()
+            var weights = new Dictionary<Edge<int>, int>()
             {
-                [new KeyValuePair<int, int>(0, 1)] = 1,
-                [new KeyValuePair<int, int>(0, 2)] = 3,
-                [new KeyValuePair<int, int>(1, 2)] = 2,
-                [new KeyValuePair<int, int>(1, 0)] = 1,
-                [new KeyValuePair<int, int>(2, 0)] = 3,
-                [new KeyValuePair<int, int>(2, 1)] = 2,
+                [new Edge<int>(0, 1)] = 1,
+                [new Edge<int>(0, 2)] = 3,
+                [new Edge<int>(1, 2)] = 2,
+                [new Edge<int>(1, 0)] = 1,
+                [new Edge<int>(2, 0)] = 3,
+                [new Edge<int>(2, 1)] = 2,
             };
 
             return new UndirectedWeightedGraph<int, int>(vertices, edges, weights);
@@ -57,12 +58,12 @@ namespace Graph.Tests.Data
                     [2] = new List<int>(new int[] { 0, 1 }),
                     [3] = new List<int>(),
                 };
-                var expectedWeights1 = new Dictionary<KeyValuePair<int, int>, int>()
+                var expectedWeights1 = new Dictionary<Edge<int>, int>()
                 {
-                    [new KeyValuePair<int, int>(0, 2)] = 3,
-                    [new KeyValuePair<int, int>(2, 0)] = 3,
-                    [new KeyValuePair<int, int>(1, 2)] = 2,
-                    [new KeyValuePair<int, int>(2, 1)] = 2,
+                    [new Edge<int>(0, 2)] = 3,
+                    [new Edge<int>(2, 0)] = 3,
+                    [new Edge<int>(1, 2)] = 2,
+                    [new Edge<int>(2, 1)] = 2,
                 };
 
                 var expectedAdjacencyLists2 = new Dictionary<int, IReadOnlyList<int>>()
@@ -72,14 +73,14 @@ namespace Graph.Tests.Data
                     [2] = new List<int>(new int[] { 0, 1 }),
                     [3] = new List<int>(),
                 };
-                var expectedWeights2 = new Dictionary<KeyValuePair<int, int>, int>()
+                var expectedWeights2 = new Dictionary<Edge<int>, int>()
                 {
-                    [new KeyValuePair<int, int>(0, 1)] = 1,
-                    [new KeyValuePair<int, int>(1, 0)] = 1,
-                    [new KeyValuePair<int, int>(0, 2)] = 3,
-                    [new KeyValuePair<int, int>(2, 0)] = 3,
-                    [new KeyValuePair<int, int>(1, 2)] = 2,
-                    [new KeyValuePair<int, int>(2, 1)] = 2,
+                    [new Edge<int>(0, 1)] = 1,
+                    [new Edge<int>(1, 0)] = 1,
+                    [new Edge<int>(0, 2)] = 3,
+                    [new Edge<int>(2, 0)] = 3,
+                    [new Edge<int>(1, 2)] = 2,
+                    [new Edge<int>(2, 1)] = 2,
                 };
 
                 yield return new object[] { GenerateTestGraph(), 0, 1, expectedAdjacencyLists1, expectedWeights1 };

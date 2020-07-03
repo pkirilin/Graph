@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Graph.Structures;
+using System.Collections.Generic;
 
 namespace Graph.Tests.Data
 {
@@ -7,12 +8,12 @@ namespace Graph.Tests.Data
         public static DirectedGraph<int> GenerateTestGraph()
         {
             var vertices = new List<int> { 0, 1, 2 };
-            var edges = new List<KeyValuePair<int, int>>()
+            var edges = new List<Edge<int>>()
             {
-                new KeyValuePair<int, int>(0, 1),
-                new KeyValuePair<int, int>(1, 2),
-                new KeyValuePair<int, int>(2, 0),
-                new KeyValuePair<int, int>(2, 1)
+                new Edge<int>(0, 1),
+                new Edge<int>(1, 2),
+                new Edge<int>(2, 0),
+                new Edge<int>(2, 1)
             };
 
             return new DirectedGraph<int>(vertices, edges);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Graph.Structures;
+using System.Collections.Generic;
 
 namespace Graph.Tests.Data
 {
@@ -7,25 +8,25 @@ namespace Graph.Tests.Data
         public static MixedWeightedGraph<int, int> GenerateTestGraph()
         {
             var vertices = new List<int> { 0, 1, 2, 3 };
-            var directedEdges = new List<KeyValuePair<int, int>>
+            var directedEdges = new List<Edge<int>>
             {
-                new KeyValuePair<int, int>(0, 1),
+                new Edge<int>(0, 1),
             };
-            var undirectedEdges = new List<KeyValuePair<int, int>>
+            var undirectedEdges = new List<Edge<int>>
             {
-                new KeyValuePair<int, int>(1, 2),
-                new KeyValuePair<int, int>(0, 2)
+                new Edge<int>(1, 2),
+                new Edge<int>(0, 2)
             };
-            var directedWeights = new Dictionary<KeyValuePair<int, int>, int>()
+            var directedWeights = new Dictionary<Edge<int>, int>()
             {
-                [new KeyValuePair<int, int>(0, 1)] = 1,
+                [new Edge<int>(0, 1)] = 1,
             };
-            var undirectedWeights = new Dictionary<KeyValuePair<int, int>, int>()
+            var undirectedWeights = new Dictionary<Edge<int>, int>()
             {
-                [new KeyValuePair<int, int>(1, 2)] = 2,
-                [new KeyValuePair<int, int>(2, 1)] = 2,
-                [new KeyValuePair<int, int>(0, 2)] = 3,
-                [new KeyValuePair<int, int>(2, 0)] = 3,
+                [new Edge<int>(1, 2)] = 2,
+                [new Edge<int>(2, 1)] = 2,
+                [new Edge<int>(0, 2)] = 3,
+                [new Edge<int>(2, 0)] = 3,
             };
 
             return new MixedWeightedGraph<int, int>(vertices, directedEdges, undirectedEdges, directedWeights, undirectedWeights);

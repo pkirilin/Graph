@@ -1,4 +1,5 @@
-﻿using Graph.Tests.Data;
+﻿using Graph.Structures;
+using Graph.Tests.Data;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -34,14 +35,14 @@ namespace Graph.Tests
         public void Ctor_ShouldInitializeAdjacencyListsWithVerticesAndEdges()
         {
             var vertices = new List<int> { 0, 1, 2, 3 };
-            var directedEdges = new List<KeyValuePair<int, int>>
+            var directedEdges = new List<Edge<int>>
             {
-                new KeyValuePair<int, int>(0, 1),
+                new Edge<int>(0, 1),
             };
-            var undirectedEdges = new List<KeyValuePair<int, int>>
+            var undirectedEdges = new List<Edge<int>>
             {
-                new KeyValuePair<int, int>(1, 2),
-                new KeyValuePair<int, int>(0, 2)
+                new Edge<int>(1, 2),
+                new Edge<int>(0, 2)
             };
             var expectedAdjacencyLists = new Dictionary<int, IReadOnlyList<int>>()
             {

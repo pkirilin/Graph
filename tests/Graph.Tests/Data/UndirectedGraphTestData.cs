@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Graph.Structures;
+using System.Collections.Generic;
 
 namespace Graph.Tests.Data
 {
@@ -7,11 +8,11 @@ namespace Graph.Tests.Data
         public static UndirectedGraph<int> GenerateTestGraph()
         {
             var vertices = new List<int> { 0, 1, 2, 3 };
-            var edges = new List<KeyValuePair<int, int>>()
+            var edges = new List<Edge<int>>()
             {
-                new KeyValuePair<int, int>(0, 1),
-                new KeyValuePair<int, int>(0, 2),
-                new KeyValuePair<int, int>(1, 2)
+                new Edge<int>(0, 1),
+                new Edge<int>(0, 2),
+                new Edge<int>(1, 2)
             };
 
             return new UndirectedGraph<int>(vertices, edges);

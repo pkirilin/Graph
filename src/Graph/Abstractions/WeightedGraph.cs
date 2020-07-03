@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Graph.Structures;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,13 +12,13 @@ namespace Graph.Abstractions
     /// <typeparam name="TVertex">Graph vertex data type</typeparam>
     public abstract class WeightedGraph<TVertex, TWeight> : GraphBase<TVertex> where TVertex : IComparable<TVertex>
     {
-        protected readonly IDictionary<KeyValuePair<TVertex, TVertex>, TWeight> _weights = new Dictionary<KeyValuePair<TVertex, TVertex>, TWeight>();
+        protected readonly IDictionary<Edge<TVertex>, TWeight> _weights = new Dictionary<Edge<TVertex>, TWeight>();
 
         /// <summary>
         /// Gets weight values of all graph edges
         /// </summary>
-        public IReadOnlyDictionary<KeyValuePair<TVertex, TVertex>, TWeight> Weights
-            => new ReadOnlyDictionary<KeyValuePair<TVertex, TVertex>, TWeight>(_weights);
+        public IReadOnlyDictionary<Edge<TVertex>, TWeight> Weights
+            => new ReadOnlyDictionary<Edge<TVertex>, TWeight>(_weights);
 
         protected WeightedGraph()
         {
@@ -29,10 +30,10 @@ namespace Graph.Abstractions
 
         protected void InitWeight(TVertex source, TVertex destination, TWeight weight)
         {
-            var edge = new KeyValuePair<TVertex, TVertex>(source, destination);
+            var edge = new Edge<TVertex>(source, destination);
             
             if (!_weights.ContainsKey(edge))
-                throw new InvalidOperationException($"Attempted to set weight '{weight}' to not existing edge '{edge.Key}' -> '{edge.Value}'");
+                throw new InvalidOperationException($"Attempted to set weight '{weight}' to not existing edge '{edge.Source}' -> '{edge.Destination}'");
             _weights[edge] = weight;
         }
 
@@ -47,8 +48,8 @@ namespace Graph.Abstractions
 
             // Removing all weights from edges containing target vertex
             var weightsRelatedToVertex = _weights.Where(w =>
-                w.Key.Key.CompareTo(vertex) == 0 ||
-                w.Key.Value.CompareTo(vertex) == 0);
+                w.Key.Source.CompareTo(vertex) == 0 ||
+                w.Key.Destination.CompareTo(vertex) == 0);
 
             foreach (var weight in weightsRelatedToVertex)
                 _weights.Remove(weight);

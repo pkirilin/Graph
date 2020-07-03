@@ -1,4 +1,5 @@
 ﻿using Graph.Abstractions;
+using Graph.Structures;
 using System;
 using System.Collections.Generic;
 
@@ -34,13 +35,13 @@ namespace Graph
         /// <param name="undirectedEdges">Initial undirected edges represented as a pair of vertices</param>
         public MixedGraph(
             IEnumerable<TVertex> vertices,
-            IEnumerable<KeyValuePair<TVertex, TVertex>> directedEdges,
-            IEnumerable<KeyValuePair<TVertex, TVertex>> undirectedEdges) : this(vertices)
+            IEnumerable<Edge<TVertex>> directedEdges,
+            IEnumerable<Edge<TVertex>> undirectedEdges) : this(vertices)
         {
             foreach (var edge in directedEdges)
-                AddDirectedEdge(edge.Key, edge.Value);
+                AddDirectedEdge(edge.Source, edge.Destination);
             foreach (var edge in undirectedEdges)
-                AddUndirectedEdge(edge.Key, edge.Value);
+                AddUndirectedEdge(edge.Source, edge.Destination);
         }
 
         #region IDirectedGraph<TVertex>

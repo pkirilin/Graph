@@ -1,4 +1,5 @@
 ﻿using Graph.Abstractions;
+using Graph.Structures;
 using System;
 using System.Collections.Generic;
 
@@ -32,10 +33,10 @@ namespace Graph
         /// </summary>
         /// <param name="vertices">Initial vertices</param>
         /// <param name="edges">Initial edges represented as a pair of vertices</param>
-        public DirectedWeightedGraph(IEnumerable<TVertex> vertices, IEnumerable<KeyValuePair<TVertex, TVertex>> edges) : base(vertices)
+        public DirectedWeightedGraph(IEnumerable<TVertex> vertices, IEnumerable<Edge<TVertex>> edges) : base(vertices)
         {
             foreach (var edge in edges)
-                AddDirectedEdge(edge.Key, edge.Value);
+                AddDirectedEdge(edge.Source, edge.Destination);
         }
 
         /// <summary>
@@ -46,15 +47,11 @@ namespace Graph
         /// <param name="weights">Initial edge weights</param>
         public DirectedWeightedGraph(
             IEnumerable<TVertex> vertices,
-            IEnumerable<KeyValuePair<TVertex, TVertex>> edges,
-            IDictionary<KeyValuePair<TVertex, TVertex>, TWeight> weights) : this(vertices, edges)
+            IEnumerable<Edge<TVertex>> edges,
+            IDictionary<Edge<TVertex>, TWeight> weights) : this(vertices, edges)
         {
             foreach (var weight in weights)
-            {
-                var source = weight.Key.Key;
-                var destination = weight.Key.Value;
-                InitWeight(source, destination, weight.Value);
-            }
+                InitWeight(weight.Key.Source, weight.Key.Destination, weight.Value);
         }
 
         #region IDirectedWeightedGraph<TVertex, TWeight>
@@ -66,20 +63,20 @@ namespace Graph
             ForbidMultipleEdge(source, destination);
 
             _adjacencyLists[source].Add(destination);
-            _weights.Add(new KeyValuePair<TVertex, TVertex>(source, destination), default);
+            _weights.Add(new Edge<TVertex>(source, destination), default);
         }
 
         public void AddDirectedEdge(TVertex source, TVertex destination, TWeight weight)
         {
             AddDirectedEdge(source, destination);
-            _weights[new KeyValuePair<TVertex, TVertex>(source, destination)] = weight;
+            _weights[new Edge<TVertex>(source, destination)] = weight;
         }
 
         public void RemoveDirectedEdge(TVertex source, TVertex destination)
         {
             EnsureEdgeVerticesExist(source, destination);
 
-            _weights.Remove(new KeyValuePair<TVertex, TVertex>(source, destination));
+            _weights.Remove(new Edge<TVertex>(source, destination));
             _adjacencyLists[source].Remove(destination);
         }
 
