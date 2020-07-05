@@ -18,7 +18,7 @@ namespace Graph.Abstractions
         /// Gets graph adjacency lists as a dictionary, where keys are vertices
         /// and values are lists of vertices adjacent to its entry key vertex
         /// </summary>
-        public IReadOnlyDictionary<TVertex, IReadOnlyList<TVertex>> AdjacencyLists
+        public virtual IReadOnlyDictionary<TVertex, IReadOnlyList<TVertex>> AdjacencyLists
         {
             get
             {
