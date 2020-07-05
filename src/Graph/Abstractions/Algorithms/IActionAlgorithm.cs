@@ -9,7 +9,7 @@ namespace Graph.Abstractions.Algorithms
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
     /// <typeparam name="TParameter">Input parameter for algorithm</typeparam>
     /// <typeparam name="TActionParameter">Parameter for executing action</typeparam>
-    interface IActionAlgorithm<TGraph, TVertex, TParameter, TActionParameter>
+    public interface IActionAlgorithm<TGraph, TVertex, TParameter, TActionParameter>
         where TGraph : GraphBase<TVertex>
         where TVertex : IComparable<TVertex>
     {

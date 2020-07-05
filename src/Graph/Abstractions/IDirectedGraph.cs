@@ -4,7 +4,7 @@
     /// Provides specific methods for unweighted directed graph
     /// </summary>
     /// <typeparam name="TVertex">Graph vertex data type</typeparam>
-    interface IDirectedGraph<TVertex>
+    public interface IDirectedGraph<TVertex>
     {
         /// <summary>
         /// Adds new one-way connected edge between two vertices (from source to destination)

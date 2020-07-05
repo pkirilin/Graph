@@ -4,7 +4,7 @@
     /// Provides specific methods for unweighted undirected graph
     /// </summary>
     /// <typeparam name="TVertex">Graph vertex data type</typeparam>
-    interface IUndirectedGraph<TVertex>
+    public interface IUndirectedGraph<TVertex>
     {
         /// <summary>
         /// Adds new two-way connected edge between two vertices (from source to destination and vice-versa)

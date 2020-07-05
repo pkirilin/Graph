@@ -8,7 +8,7 @@ namespace Graph.Abstractions.Algorithms
     /// <typeparam name="TGraph">Graph type</typeparam>
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
     /// <typeparam name="TResult">Algorithm result type</typeparam>
-    interface IFunctionAlgorithm<TGraph, TVertex, TResult>
+    public interface IFunctionAlgorithm<TGraph, TVertex, TResult>
         where TGraph : GraphBase<TVertex>
         where TVertex : IComparable<TVertex>
     {
@@ -27,7 +27,7 @@ namespace Graph.Abstractions.Algorithms
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
     /// <typeparam name="TResult">Algorithm result type</typeparam>
     /// <typeparam name="TParameter">Input parameter for algorithm</typeparam>
-    interface IFunctionAlgorithm<TGraph, TVertex, TResult, TParameter>
+    public interface IFunctionAlgorithm<TGraph, TVertex, TResult, TParameter>
         where TGraph : GraphBase<TVertex>
         where TVertex : IComparable<TVertex>
     {

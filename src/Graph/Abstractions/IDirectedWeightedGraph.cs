@@ -5,7 +5,7 @@
     /// </summary>
     /// <typeparam name="TVertex">Graph vertex data type</typeparam>
     /// <typeparam name="TWeight">Graph edge weight type</typeparam>
-    interface IDirectedWeightedGraph<TVertex, TWeight> : IDirectedGraph<TVertex>
+    public interface IDirectedWeightedGraph<TVertex, TWeight> : IDirectedGraph<TVertex>
     {
         /// <summary>
         /// Adds new one-way connected edge between two vertices (from source to destination)
