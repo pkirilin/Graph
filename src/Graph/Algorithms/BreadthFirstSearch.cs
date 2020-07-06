@@ -8,11 +8,11 @@ using System.Linq;
 namespace Graph.Algorithms
 {
     /// <summary>
-    /// Depth-first search (DFS) algorithm for traversing/searching graph vertices
+    /// Breadth-first search (BFS) algorithm for traversing/searching graph vertices
     /// </summary>
     /// <typeparam name="TGraph">Graph type</typeparam>
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
-    public class DepthFirstSearch<TGraph, TVertex> : IActionAlgorithm<TGraph, TVertex, TVertex, TVertex>
+    public class BreadthFirstSearch<TGraph, TVertex> : IActionAlgorithm<TGraph, TVertex, TVertex, TVertex>
         where TGraph : GraphBase<TVertex>
         where TVertex : IComparable<TVertex>
     {
@@ -21,19 +21,19 @@ namespace Graph.Algorithms
             if (!graph.AdjacencyLists.ContainsKey(initialVertex))
                 throw new ArgumentException($"Initial vertex = '{initialVertex}' doesn't exist in graph", nameof(initialVertex));
 
-            var verticesForNextVisit = new Stack<TVertex>(new TVertex[] { initialVertex });
+            var verticesForNextVisit = new Queue<TVertex>(new TVertex[] { initialVertex });
             var visitedVertices = new HashSet<TVertex>(new GraphVertexEqualityComparer<TVertex>());
             var queuedVertices = new HashSet<TVertex>(new GraphVertexEqualityComparer<TVertex>());
 
             while (verticesForNextVisit.Any())
             {
-                var vertex = verticesForNextVisit.Pop();
+                var vertex = verticesForNextVisit.Dequeue();
 
                 foreach (var connectedVertex in graph.AdjacencyLists[vertex])
                 {
                     if (!visitedVertices.Contains(connectedVertex) && !queuedVertices.Contains(connectedVertex))
                     {
-                        verticesForNextVisit.Push(connectedVertex);
+                        verticesForNextVisit.Enqueue(connectedVertex);
                         queuedVertices.Add(connectedVertex);
                     }
                 }

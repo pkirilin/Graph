@@ -33,7 +33,6 @@ namespace Graph.Algorithms.Tests
             {
                 dfsAlgorithm.Execute(graph, initialVertex, vertex => { });
             });
-
         }
     }
 }
