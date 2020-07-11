@@ -34,6 +34,11 @@ namespace Graph.Abstractions
         }
 
         /// <summary>
+        /// Gets all graph vertices
+        /// </summary>
+        public virtual IEnumerable<TVertex> Vertices => AdjacencyLists.Keys;
+
+        /// <summary>
         /// Initializes an empty graph
         /// </summary>
         protected GraphBase()
