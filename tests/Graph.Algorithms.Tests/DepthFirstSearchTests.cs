@@ -24,7 +24,7 @@ namespace Graph.Algorithms.Tests
         }
 
         [Theory]
-        [MemberData(nameof(DepthFirstSearchTestData.MemberData_Execute_ArgumentException), MemberType = typeof(DepthFirstSearchTestData))]
+        [MemberData(nameof(DepthFirstSearchTestData.MemberData_WrongInitialVertex), MemberType = typeof(DepthFirstSearchTestData))]
         public void DepthFirstSearch_ShouldThrowArgumentException_WhenInitialVertexDoesNotExistInGraph(GraphBase<int> graph, int initialVertex)
         {
             var dfsAlgorithm = new DepthFirstSearch<GraphBase<int>, int>();
@@ -32,6 +32,18 @@ namespace Graph.Algorithms.Tests
             Assert.Throws<ArgumentException>(() =>
             {
                 dfsAlgorithm.Execute(graph, initialVertex, vertex => { });
+            });
+        }
+
+        [Theory]
+        [MemberData(nameof(DepthFirstSearchTestData.MemberData_ArgumentNullException), MemberType = typeof(DepthFirstSearchTestData))]
+        public void DepthFirstSearch_ShouldThrowArgumentNullException_WhenInputParametersAreInvalid(GraphBase<int> graph, int initialVertex, Action<int> action)
+        {
+            var dfsAlgorithm = new DepthFirstSearch<GraphBase<int>, int>();
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                dfsAlgorithm.Execute(graph, initialVertex, action);
             });
         }
     }

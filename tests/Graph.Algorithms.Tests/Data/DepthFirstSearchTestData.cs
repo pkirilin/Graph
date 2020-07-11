@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Graph.Algorithms.Tests.Data
 {
@@ -14,12 +15,23 @@ namespace Graph.Algorithms.Tests.Data
             }
         }
 
-        public static IEnumerable<object[]> MemberData_Execute_ArgumentException
+        public static IEnumerable<object[]> MemberData_WrongInitialVertex
         {
             get
             {
                 yield return new object[] { TestGraphs.Graph1, -1 };
                 yield return new object[] { TestGraphs.Graph1, 100 };
+            }
+        }
+
+        public static IEnumerable<object[]> MemberData_ArgumentNullException
+        {
+            get
+            {
+                Action<int> action = vertex => { };
+
+                yield return new object[] { null, 0, action };
+                yield return new object[] { TestGraphs.Graph1, 0, null };
             }
         }
     }

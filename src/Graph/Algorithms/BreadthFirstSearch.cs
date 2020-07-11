@@ -18,6 +18,12 @@ namespace Graph.Algorithms
     {
         public void Execute(TGraph graph, TVertex initialVertex, Action<TVertex> action)
         {
+            if (graph == null)
+                throw new ArgumentNullException(nameof(graph));
+            if (initialVertex == null)
+                throw new ArgumentNullException(nameof(initialVertex));
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
             if (!graph.AdjacencyLists.ContainsKey(initialVertex))
                 throw new ArgumentException($"Initial vertex = '{initialVertex}' doesn't exist in graph", nameof(initialVertex));
 

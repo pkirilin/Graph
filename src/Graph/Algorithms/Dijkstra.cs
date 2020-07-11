@@ -1,4 +1,4 @@
-using Graph.Abstractions;
+﻿using Graph.Abstractions;
 using Graph.Abstractions.Algorithms;
 using Graph.Internal;
 using System;
@@ -21,6 +21,10 @@ namespace Graph.Algorithms
     {
         public IDictionary<TVertex, int> Execute(TGraph graph, TVertex initialVertex)
         {
+            if (graph == null)
+                throw new ArgumentNullException(nameof(graph));
+            if (initialVertex == null)
+                throw new ArgumentNullException(nameof(initialVertex));
             if (!graph.AdjacencyLists.ContainsKey(initialVertex))
                 throw new ArgumentException($"Initial vertex = '{initialVertex}' doesn't exist in graph", nameof(initialVertex));
             if (graph.Weights.Any(w => w.Value < 0))
@@ -59,7 +63,7 @@ namespace Graph.Algorithms
         /// <returns>New distances dictionary</returns>
         private IDictionary<TVertex, int> InitShortestDistances(TGraph graph, TVertex initialVertex)
         {
-            return graph.AdjacencyLists.Keys.ToDictionary(
+            return graph.Vertices.ToDictionary(
                 v => v,
                 v => v.CompareTo(initialVertex) == 0 ? 0 : Int32.MaxValue
             );

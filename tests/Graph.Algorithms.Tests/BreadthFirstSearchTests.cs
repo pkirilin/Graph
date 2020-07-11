@@ -24,7 +24,7 @@ namespace Graph.Algorithms.Tests
         }
 
         [Theory]
-        [MemberData(nameof(BreadthFirstSearchTestData.MemberData_Execute_ArgumentException), MemberType = typeof(BreadthFirstSearchTestData))]
+        [MemberData(nameof(BreadthFirstSearchTestData.MemberData_WrongInitialVertex), MemberType = typeof(BreadthFirstSearchTestData))]
         public void BreadthFirstSearch_ShouldThrowArgumentException_WhenInitialVertexDoesNotExistInGraph(GraphBase<int> graph, int initialVertex)
         {
             var bfsAlgorithm = new BreadthFirstSearch<GraphBase<int>, int>();
@@ -32,6 +32,18 @@ namespace Graph.Algorithms.Tests
             Assert.Throws<ArgumentException>(() =>
             {
                 bfsAlgorithm.Execute(graph, initialVertex, vertex => { });
+            });
+        }
+
+        [Theory]
+        [MemberData(nameof(BreadthFirstSearchTestData.MemberData_ArgumentNullException), MemberType = typeof(BreadthFirstSearchTestData))]
+        public void BreadthFirstSearch_ShouldThrowArgumentNullException_WhenInputParametersAreInvalid(GraphBase<int> graph, int initialVertex, Action<int> action)
+        {
+            var bfsAlgorithm = new BreadthFirstSearch<GraphBase<int>, int>();
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                bfsAlgorithm.Execute(graph, initialVertex, action);
             });
         }
     }

@@ -1,4 +1,4 @@
-using Graph.Abstractions;
+﻿using Graph.Abstractions;
 using Moq;
 using System.Collections.Generic;
 
@@ -53,6 +53,14 @@ namespace Graph.Algorithms.Tests.Data
                     });
 
                 yield return new object[] { graphMock.Object, 0 };
+            }
+        }
+
+        public static IEnumerable<object[]> MemberData_ArgumentNullException
+        {
+            get
+            {
+                yield return new object[] { null, 0 };
             }
         }
     }

@@ -42,5 +42,17 @@ namespace Graph.Algorithms.Tests
                 dijkstraAlgorithm.Execute(graph, initialVertex);
             });
         }
+
+        [Theory]
+        [MemberData(nameof(DijkstraTestData.MemberData_ArgumentNullException), MemberType = typeof(DijkstraTestData))]
+        public void DijkstraAlgorithm_ShouldThrowArgumentNullException_WhenInputParametersAreInvalid(WeightedGraph<int, int> graph, int initialVertex)
+        {
+            var dijkstraAlgorithm = new Dijkstra<WeightedGraph<int, int>, int>();
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                dijkstraAlgorithm.Execute(graph, initialVertex);
+            });
+        }
     }
 }
