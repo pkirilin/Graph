@@ -1,7 +1,6 @@
-﻿using Graph.Abstractions;
+using Graph.Abstractions;
 using Graph.Abstractions.Algorithms;
 using Graph.Internal;
-using Graph.Structures;
 using System;
 using System.Collections.Generic;
 using System.Linq;

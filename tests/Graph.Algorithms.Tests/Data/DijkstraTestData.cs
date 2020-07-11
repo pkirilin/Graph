@@ -1,5 +1,4 @@
-﻿using Graph.Abstractions;
-using Graph.Structures;
+using Graph.Abstractions;
 using Moq;
 using System.Collections.Generic;
 
