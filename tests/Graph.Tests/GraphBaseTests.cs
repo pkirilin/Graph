@@ -40,5 +40,23 @@ namespace Graph.Tests
                 graph.RemoveVertex(1);
             });
         }
+
+        [Theory]
+        [MemberData(nameof(GraphBaseTestData.MemberData_Edges), MemberType = typeof(GraphBaseTestData))]
+        public void Edges_ShouldReturnAllGraphEdges(GraphBase<int> graph, IEnumerable<Edge<int>> expectedReducedEdges)
+        {
+            var result = graph.Edges;
+
+            Assert.Equal(expectedReducedEdges, result);
+        }
+
+        [Theory]
+        [MemberData(nameof(GraphBaseTestData.MemberData_ReducedEdges), MemberType = typeof(GraphBaseTestData))]
+        public void ReducedEdges_ShouldReturnGraphEdgesWithoutUndirectedDuplicates(GraphBase<int> graph, IEnumerable<Edge<int>> expectedReducedEdges)
+        {
+            var result = graph.ReducedEdges;
+
+            Assert.Equal(expectedReducedEdges, result);
+        }
     }
 }

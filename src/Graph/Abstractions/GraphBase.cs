@@ -39,6 +39,30 @@ namespace Graph.Abstractions
         public virtual IEnumerable<TVertex> Vertices => AdjacencyLists.Keys;
 
         /// <summary>
+        /// Gets all graph edges
+        /// </summary>
+        public virtual IEnumerable<Edge<TVertex>> Edges => GetAvailableEdges(_adjacencyLists.ToDictionary(p => p.Key, p => p.Value.ToList()));
+
+        /// <summary>
+        /// Gets graph edges without undirected duplicates
+        /// (e.g. two-way undirected edge [A -> B, B -> A] will only be presented in the result collection as A -> B or B -> A, depending on its insertion order)
+        /// </summary>
+        public virtual IEnumerable<Edge<TVertex>> ReducedEdges
+        {
+            get
+            {
+                var adjacencyListsCopy = _adjacencyLists.ToDictionary(p => p.Key, p => p.Value.ToList());
+                var vertices = adjacencyListsCopy.Keys.ToList();
+
+                foreach (var sourceVertex in vertices)
+                    foreach (var destinationVertex in adjacencyListsCopy[sourceVertex])
+                        adjacencyListsCopy[destinationVertex].Remove(sourceVertex);
+
+                return GetAvailableEdges(adjacencyListsCopy);
+            }
+        }
+
+        /// <summary>
         /// Initializes an empty graph
         /// </summary>
         protected GraphBase()
@@ -95,6 +119,18 @@ namespace Graph.Abstractions
         {
             if (_adjacencyLists[source].Any(v => v.CompareTo(destination) == 0))
                 throw new InvalidOperationException($"Attempted to insert edge connecting vertices '{source}' and '{destination}' which already exists, but multiple edges are forbidden");
+        }
+
+        /// <summary>
+        /// Returns all edges that are presented in adjacency lists
+        /// </summary>
+        /// <param name="adjacencyLists">Target adjacency lists</param>
+        /// <returns>Edges collection</returns>
+        protected IEnumerable<Edge<TVertex>> GetAvailableEdges(IDictionary<TVertex, List<TVertex>> adjacencyLists)
+        {
+            foreach (var sourceVertex in adjacencyLists.Keys)
+                foreach (var destinationVertex in adjacencyLists[sourceVertex])
+                    yield return new Edge<TVertex>(sourceVertex, destinationVertex);
         }
 
         /// <summary>
