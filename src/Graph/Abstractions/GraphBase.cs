@@ -18,7 +18,7 @@ namespace Graph.Abstractions
         /// Gets graph adjacency lists as a dictionary, where keys are vertices
         /// and values are lists of vertices adjacent to its entry key vertex
         /// </summary>
-        public virtual IReadOnlyDictionary<TVertex, IReadOnlyList<TVertex>> AdjacencyLists
+        public IReadOnlyDictionary<TVertex, IReadOnlyList<TVertex>> AdjacencyLists
         {
             get
             {
@@ -36,18 +36,18 @@ namespace Graph.Abstractions
         /// <summary>
         /// Gets all graph vertices
         /// </summary>
-        public virtual IEnumerable<TVertex> Vertices => AdjacencyLists.Keys;
+        public IEnumerable<TVertex> Vertices => AdjacencyLists.Keys;
 
         /// <summary>
         /// Gets all graph edges
         /// </summary>
-        public virtual IEnumerable<Edge<TVertex>> Edges => GetAvailableEdges(_adjacencyLists.ToDictionary(p => p.Key, p => p.Value.ToList()));
+        public IEnumerable<Edge<TVertex>> Edges => GetAvailableEdges(_adjacencyLists.ToDictionary(p => p.Key, p => p.Value.ToList()));
 
         /// <summary>
         /// Gets graph edges without undirected duplicates
         /// (e.g. two-way undirected edge [A -> B, B -> A] will only be presented in the result collection as A -> B or B -> A, depending on its insertion order)
         /// </summary>
-        public virtual IEnumerable<Edge<TVertex>> ReducedEdges
+        public IEnumerable<Edge<TVertex>> ReducedEdges
         {
             get
             {

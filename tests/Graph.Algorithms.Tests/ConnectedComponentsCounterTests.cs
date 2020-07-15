@@ -10,8 +10,7 @@ namespace Graph.Algorithms.Tests
         [MemberData(nameof(ConnectedComponentsCounterTestData.MemberData_Execute), MemberType = typeof(ConnectedComponentsCounterTestData))]
         public void ConnectedComponentsCounter_ShouldReturnConnectedComponentsCountForGraph(UndirectedWeightedGraph<int, int> graph, int expectedConnectedComponentsCount)
         {
-            var dfsAlgorithm = new DepthFirstSearch<UndirectedWeightedGraph<int, int>, int>();
-            var counter = new ConnectedComponentsCounter<UndirectedWeightedGraph<int, int>, int>(dfsAlgorithm);
+            var counter = ConnectedComponentsCounterTestData.ConnectedComponentsCounter;
 
             var result = counter.Execute(graph);
 
@@ -21,8 +20,7 @@ namespace Graph.Algorithms.Tests
         [Fact]
         public void ConnectedComponentsCounter_ShouldThrowArgumentNullException_WhenTargetGraphIsNull()
         {
-            var dfsAlgorithm = new DepthFirstSearch<UndirectedWeightedGraph<int, int>, int>();
-            var counter = new ConnectedComponentsCounter<UndirectedWeightedGraph<int, int>, int>(dfsAlgorithm);
+            var counter = ConnectedComponentsCounterTestData.ConnectedComponentsCounter;
 
             Assert.Throws<ArgumentNullException>(() =>
             {

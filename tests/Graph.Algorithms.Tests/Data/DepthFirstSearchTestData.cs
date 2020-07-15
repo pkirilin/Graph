@@ -9,7 +9,7 @@ namespace Graph.Algorithms.Tests.Data
         {
             get
             {
-                var expectedVisitedVertices1 = new List<int> { 0, 3, 5, 6, 4, 2, 1 };
+                var expectedVisitedVertices1 = new List<int> { 0, 3, 5, 4, 6, 2, 1 };
 
                 yield return new object[] { TestGraphs.Graph1, 0, expectedVisitedVertices1 };
             }

@@ -12,6 +12,7 @@ namespace Graph.Algorithms.Tests
         public void KruskalAlgorithm_ShouldFindMinimalSpanningTreeForGraph(UndirectedWeightedGraph<int, int> graph, IEnumerable<Edge<int>> expectedResult)
         {
             var kruskalAlgorithm = KruskalTestData.KruskalAlgorithm;
+
             var result = kruskalAlgorithm.Execute(graph);
 
             Assert.Equal(expectedResult, result);

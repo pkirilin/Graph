@@ -1,17 +1,24 @@
-﻿using Graph.Abstractions.Algorithms;
-using Moq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Graph.Algorithms.Tests.Data
 {
     static class PrimTestData
     {
+        public static Prim<UndirectedWeightedGraph<int, int>, int> PrimAlgorithm
+        {
+            get
+            {
+                var dfsAlgorithm = new DepthFirstSearch<UndirectedWeightedGraph<int, int>, int>();
+                var connectedComponentsCounter = new ConnectedComponentsCounter<UndirectedWeightedGraph<int, int>, int>(dfsAlgorithm);
+
+                return new Prim<UndirectedWeightedGraph<int, int>, int>(connectedComponentsCounter);
+            }
+        }
+
         public static IEnumerable<object[]> MemberData_Execute
         {
             get
             {
-                var graph = TestGraphs.Graph2;
-                var connectedComponentsCounterMock = new Mock<IFunctionAlgorithm<UndirectedWeightedGraph<int, int>, int, int>>();
                 var expectedSpanningTreeEdges = new List<Edge<int>>()
                 {
                     new Edge<int>(0, 1),
@@ -21,14 +28,7 @@ namespace Graph.Algorithms.Tests.Data
                     new Edge<int>(4, 3),
                 };
 
-                connectedComponentsCounterMock.Setup(c => c.Execute(graph)).Returns(1);
-
-                yield return new object[]
-                {
-                    graph,
-                    connectedComponentsCounterMock.Object,
-                    expectedSpanningTreeEdges
-                };
+                yield return new object[] { TestGraphs.Graph2, expectedSpanningTreeEdges };
             }
         }
 
@@ -36,15 +36,7 @@ namespace Graph.Algorithms.Tests.Data
         {
             get
             {
-                var graph = TestGraphs.Graph2;
-                var connectedComponentsCounterMock1 = new Mock<IFunctionAlgorithm<UndirectedWeightedGraph<int, int>, int, int>>();
-                var connectedComponentsCounterMock2 = new Mock<IFunctionAlgorithm<UndirectedWeightedGraph<int, int>, int, int>>();
-
-                connectedComponentsCounterMock1.Setup(c => c.Execute(graph)).Returns(2);
-                connectedComponentsCounterMock2.Setup(c => c.Execute(graph)).Returns(3);
-
-                yield return new object[] { graph, connectedComponentsCounterMock1.Object };
-                yield return new object[] { graph, connectedComponentsCounterMock2.Object };
+                yield return new object[] { TestGraphs.Graph3 };
             }
         }
 
@@ -52,16 +44,7 @@ namespace Graph.Algorithms.Tests.Data
         {
             get
             {
-                var graphMock1 = new Mock<UndirectedWeightedGraph<int, int>>();
-                var graphMock2 = new Mock<UndirectedWeightedGraph<int, int>>();
-                var connectedComponentsCounterMock = new Mock<IFunctionAlgorithm<UndirectedWeightedGraph<int, int>, int, int>>();
-
-                connectedComponentsCounterMock
-                    .Setup(c => c.Execute(It.IsNotNull<UndirectedWeightedGraph<int, int>>()))
-                    .Returns(0);
-
-                yield return new object[] { graphMock1.Object, connectedComponentsCounterMock.Object };
-                yield return new object[] { graphMock2.Object, connectedComponentsCounterMock.Object };
+                yield return new object[] { new UndirectedWeightedGraph<int, int>() };
             }
         }
     }

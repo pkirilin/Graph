@@ -1,6 +1,4 @@
-﻿using Graph.Abstractions.Algorithms;
-using Graph.Algorithms.Tests.Data;
-using Moq;
+﻿using Graph.Algorithms.Tests.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +10,9 @@ namespace Graph.Algorithms.Tests
     {
         [Theory]
         [MemberData(nameof(PrimTestData.MemberData_Execute), MemberType = typeof(PrimTestData))]
-        public void PrimAlgorithm_ShouldFindMinimalSpanningTreeForGraph(
-            UndirectedWeightedGraph<int, int> graph,
-            IFunctionAlgorithm<UndirectedWeightedGraph<int, int>, int, int> connectedComponentsCounter,
-            IEnumerable<Edge<int>> expectedSpanningTreeEdges)
+        public void PrimAlgorithm_ShouldFindMinimalSpanningTreeForGraph(UndirectedWeightedGraph<int, int> graph, IEnumerable<Edge<int>> expectedSpanningTreeEdges)
         {
-            var primAlgorithm = new Prim<UndirectedWeightedGraph<int, int>, int>(connectedComponentsCounter);
+            var primAlgorithm = PrimTestData.PrimAlgorithm;
 
             var result = primAlgorithm.Execute(graph);
 
@@ -27,8 +22,7 @@ namespace Graph.Algorithms.Tests
         [Fact]
         public void PrimAlgorithm_ShouldThrowArgumentNullException_WhenTargetGraphIsNull()
         {
-            var connectedComponentsCounterMock = new Mock<IFunctionAlgorithm<UndirectedWeightedGraph<int, int>, int, int>>();
-            var primAlgorithm = new Prim<UndirectedWeightedGraph<int, int>, int>(connectedComponentsCounterMock.Object);
+            var primAlgorithm = PrimTestData.PrimAlgorithm;
 
             Assert.Throws<ArgumentNullException>(() =>
             {
@@ -38,11 +32,9 @@ namespace Graph.Algorithms.Tests
 
         [Theory]
         [MemberData(nameof(PrimTestData.MemberData_InvalidConnectedComponentsCount), MemberType = typeof(PrimTestData))]
-        public void PrimAlgorithm_ShouldThrowInvalidOperationException_WhenTargetGraphHasMoreThanOneConnectedComponents(
-            UndirectedWeightedGraph<int, int> graph,
-            IFunctionAlgorithm<UndirectedWeightedGraph<int, int>, int, int> connectedComponentsCounter)
+        public void PrimAlgorithm_ShouldThrowInvalidOperationException_WhenTargetGraphHasMoreThanOneConnectedComponents(UndirectedWeightedGraph<int, int> graph)
         {
-            var primAlgorithm = new Prim<UndirectedWeightedGraph<int, int>, int>(connectedComponentsCounter);
+            var primAlgorithm = PrimTestData.PrimAlgorithm;
 
             Assert.Throws<InvalidOperationException>(() =>
             {
@@ -52,11 +44,9 @@ namespace Graph.Algorithms.Tests
 
         [Theory]
         [MemberData(nameof(PrimTestData.MemberData_EmptyVerticesOrEdges), MemberType = typeof(PrimTestData))]
-        public void PrimAlgorithm_ShouldReturnEmptySpanningTreeEdges_WhenTargetGraphHasNoVerticesOrEdges(
-            UndirectedWeightedGraph<int, int> graph,
-            IFunctionAlgorithm<UndirectedWeightedGraph<int, int>, int, int> connectedComponentsCounter)
+        public void PrimAlgorithm_ShouldReturnEmptySpanningTreeEdges_WhenTargetGraphHasNoVerticesOrEdges(UndirectedWeightedGraph<int, int> graph)
         {
-            var primAlgorithm = new Prim<UndirectedWeightedGraph<int, int>, int>(connectedComponentsCounter);
+            var primAlgorithm = PrimTestData.PrimAlgorithm;
 
             var result = primAlgorithm.Execute(graph);
 

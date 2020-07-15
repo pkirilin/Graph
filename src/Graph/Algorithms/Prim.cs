@@ -1,5 +1,4 @@
-﻿using Graph.Abstractions;
-using Graph.Abstractions.Algorithms;
+﻿using Graph.Abstractions.Algorithms;
 using Graph.Internal;
 using System;
 using System.Collections.Generic;

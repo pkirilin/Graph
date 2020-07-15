@@ -16,7 +16,7 @@ namespace Graph.Abstractions
         /// <summary>
         /// Gets weight values of all graph edges
         /// </summary>
-        public virtual IReadOnlyDictionary<Edge<TVertex>, TWeight> Weights
+        public IReadOnlyDictionary<Edge<TVertex>, TWeight> Weights
             => new ReadOnlyDictionary<Edge<TVertex>, TWeight>(_weights);
 
         protected WeightedGraph()

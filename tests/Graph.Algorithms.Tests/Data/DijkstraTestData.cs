@@ -1,6 +1,4 @@
-﻿using Graph.Abstractions;
-using Moq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Graph.Algorithms.Tests.Data
 {
@@ -36,23 +34,16 @@ namespace Graph.Algorithms.Tests.Data
         {
             get
             {
-                var graphMock = new Mock<WeightedGraph<int, int>>();
+                var vertices = new List<int>() { 0, 1 };
+                var edges = new List<Edge<int>>() { new Edge<int>(0, 1) };
+                var weights = new Dictionary<Edge<int>, int>()
+                {
+                    [new Edge<int>(0, 1)] = -1,
+                };
 
-                graphMock.SetupGet(g => g.AdjacencyLists)
-                    .Returns(new Dictionary<int, IReadOnlyList<int>>()
-                    {
-                        [0] = new List<int>() { 1 },
-                        [1] = new List<int>() { 0 },
-                    });
+                var graph = new UndirectedWeightedGraph<int, int>(vertices, edges, weights);
 
-                graphMock.SetupGet(g => g.Weights)
-                    .Returns(new Dictionary<Edge<int>, int>()
-                    {
-                        [new Edge<int>(0, 1)] = -1,
-                        [new Edge<int>(1, 0)] = 1,
-                    });
-
-                yield return new object[] { graphMock.Object, 0 };
+                yield return new object[] { graph, 0 };
             }
         }
 
