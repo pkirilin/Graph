@@ -15,7 +15,7 @@ namespace Graph.Algorithms
     /// <typeparam name="TGraph">Graph type</typeparam>
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
     public class Prim<TGraph, TVertex> : IFunctionAlgorithm<TGraph, TVertex, IEnumerable<Edge<TVertex>>>
-        where TGraph : WeightedGraph<TVertex, int>, IUndirectedGraph<TVertex>
+        where TGraph : UndirectedWeightedGraph<TVertex, int>
         where TVertex : IComparable<TVertex>
     {
         private readonly IFunctionAlgorithm<TGraph, TVertex, int> _connectedComponentsCounter;
