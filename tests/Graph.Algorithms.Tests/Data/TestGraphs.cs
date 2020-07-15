@@ -19,6 +19,20 @@ namespace Graph.Algorithms.Tests.Data
             }
         }
 
+        public static UndirectedGraph<int> TwoConnectedVertices
+        {
+            get
+            {
+                var vertices = new List<int>() { 0, 1 };
+                var edges = new List<Edge<int>>()
+                {
+                    new Edge<int>(0, 1)
+                };
+
+                return new UndirectedGraph<int>(vertices, edges);
+            }
+        }
+
         public static UndirectedGraph<int> Graph1
         {
             get
@@ -46,7 +60,6 @@ namespace Graph.Algorithms.Tests.Data
         {
             get
             {
-                var graphMock = new Mock<UndirectedWeightedGraph<int, int>>();
                 var adjacencyLists = new Dictionary<int, IReadOnlyList<int>>()
                 {
                     [0] = new List<int> { 1, 2, 5 },
@@ -56,6 +69,20 @@ namespace Graph.Algorithms.Tests.Data
                     [4] = new List<int> { 3, 5 },
                     [5] = new List<int> { 0, 2, 4 },
                 };
+
+                var edges = new List<Edge<int>>()
+                {
+                    new Edge<int>(0, 1),
+                    new Edge<int>(0, 2),
+                    new Edge<int>(0, 5),
+                    new Edge<int>(1, 2),
+                    new Edge<int>(1, 3),
+                    new Edge<int>(2, 3),
+                    new Edge<int>(2, 5),
+                    new Edge<int>(3, 4),
+                    new Edge<int>(4, 5),
+                };
+
                 var weights = new Dictionary<Edge<int>, int>()
                 {
                     [new Edge<int>(0, 1)] = 7,
@@ -83,11 +110,7 @@ namespace Graph.Algorithms.Tests.Data
                     [new Edge<int>(5, 4)] = 9,
                 };
 
-                graphMock.SetupGet(g => g.AdjacencyLists).Returns(adjacencyLists);
-                graphMock.SetupGet(g => g.Vertices).Returns(adjacencyLists.Keys);
-                graphMock.SetupGet(g => g.Weights).Returns(weights);
-
-                return graphMock.Object;
+                return new UndirectedWeightedGraph<int, int>(adjacencyLists.Keys, edges, weights);
             }
         }
 
@@ -127,6 +150,29 @@ namespace Graph.Algorithms.Tests.Data
                 graphMock.SetupGet(g => g.AdjacencyLists).Returns(adjacencyLists);
                 graphMock.SetupGet(g => g.Vertices).Returns(adjacencyLists.Keys);
                 graphMock.SetupGet(g => g.Weights).Returns(weights);
+
+                return graphMock.Object;
+            }
+        }
+
+        public static DirectedGraph<int> Graph4
+        {
+            get
+            {
+                var graphMock = new Mock<DirectedGraph<int>>();
+                var adjacencyLists = new Dictionary<int, IReadOnlyList<int>>()
+                {
+                    [0] = new List<int> { 1, 3 },
+                    [1] = new List<int> { },
+                    [2] = new List<int> { 1, 3 },
+                    [3] = new List<int> { 4 },
+                    [4] = new List<int> { 5 },
+                    [5] = new List<int> { },
+                    [6] = new List<int> { 5 },
+                };
+
+                graphMock.SetupGet(g => g.AdjacencyLists).Returns(adjacencyLists);
+                graphMock.SetupGet(g => g.Vertices).Returns(adjacencyLists.Keys);
 
                 return graphMock.Object;
             }
