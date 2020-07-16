@@ -1,5 +1,4 @@
-﻿using Graph.Structures;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Graph.Tests.Data
 {

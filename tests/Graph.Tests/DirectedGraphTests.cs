@@ -1,5 +1,4 @@
-﻿using Graph.Structures;
-using Graph.Tests.Data;
+﻿using Graph.Tests.Data;
 using System;
 using System.Collections.Generic;
 using Xunit;

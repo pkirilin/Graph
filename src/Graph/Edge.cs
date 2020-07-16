@@ -1,4 +1,4 @@
-﻿namespace Graph.Structures
+﻿namespace Graph
 {
     /// <summary>
     /// Represents a single connection between two graph vertices
