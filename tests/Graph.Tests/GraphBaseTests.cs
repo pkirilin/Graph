@@ -58,5 +58,24 @@ namespace Graph.Tests
 
             Assert.Equal(expectedReducedEdges, result);
         }
+
+        [Theory]
+        [MemberData(nameof(GraphBaseTestData.MemberData_GetVertexDeg), MemberType = typeof(GraphBaseTestData))]
+        public void GetVertexDeg_ReturnsDegreeOfSpecifiedVertex(GraphBase<int> graph, int vertex, int expectedDeg)
+        {
+            var result = graph.GetVertexDeg(vertex);
+
+            Assert.Equal(expectedDeg, result);
+        }
+
+        [Theory]
+        [MemberData(nameof(GraphBaseTestData.MemberData_GetVertexDeg_WrongVertex), MemberType = typeof(GraphBaseTestData))]
+        public void GetVertexDeg_ThrowsArgumentException_WhenNotExistingVertexSpecified(GraphBase<int> graph, int vertex)
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                graph.GetVertexDeg(vertex);
+            });
+        }
     }
 }
