@@ -28,27 +28,30 @@ namespace Graph.Algorithms
 
             var verticesForNextVisit = new Stack<TVertex>(new TVertex[] { initialVertex });
             var visitedVertices = new HashSet<TVertex>(new GraphVertexEqualityComparer<TVertex>());
-            var queuedVertices = new HashSet<TVertex>(new GraphVertexEqualityComparer<TVertex>());
-            var excludedEdges = new HashSet<Edge<TVertex>>();
+            var visitedEdges = new HashSet<Edge<TVertex>>();
 
             while (verticesForNextVisit.Any())
             {
                 var curVertex = verticesForNextVisit.Pop();
 
+                // If current vertex has already been visited and is connected with any visited one, graph contains cycle
+                if (visitedVertices.Contains(curVertex) && IsEdgeToVisitedVertexExists(graph, curVertex, visitedVertices))
+                    return true;
+
                 foreach (var connectedVertex in graph.AdjacencyLists[curVertex])
                 {
-                    if (!visitedVertices.Contains(connectedVertex) && !queuedVertices.Contains(connectedVertex))
+                    var edge = new Edge<TVertex>(curVertex, connectedVertex);
+
+                    if (!visitedEdges.Contains(edge))
                     {
                         verticesForNextVisit.Push(connectedVertex);
-                        queuedVertices.Add(connectedVertex);
-                        // For undirected graphs: excluding the reverse edge for correct cycle detection
-                        excludedEdges.Add(new Edge<TVertex>(connectedVertex, curVertex));
+
+                        // For undirected graph back edge should be excluded from cycle detection
+                        // (e.g. path [A -> B, B -> A] is not a cycle in terms of undirected graphs)
+                        if (graph is IUndirectedGraph<TVertex>)
+                            visitedEdges.Add(new Edge<TVertex>(connectedVertex, curVertex));
                     }
                 }
-
-                // If edge to any already visited vertex exists (except excluded edges), there's a cycle in graph
-                if (visitedVertices.Any(v => IsEdgeToVisitedVertexExists(graph, curVertex, v, excludedEdges)))
-                    return true;
 
                 visitedVertices.Add(curVertex);
             }
@@ -62,12 +65,10 @@ namespace Graph.Algorithms
         /// <param name="graph">Target graph</param>
         /// <param name="curVertex">Current vertex</param>
         /// <param name="visitedVertex">Visited vertex</param>
-        /// <param name="excludedEdges">The edges that must not be considered in this check</param>
-        /// <returns>True if edge exists, false - if not</returns>
-        private bool IsEdgeToVisitedVertexExists(TGraph graph, TVertex curVertex, TVertex visitedVertex, ISet<Edge<TVertex>> excludedEdges)
+        /// <returns>True if edge exists, false if not</returns>
+        private bool IsEdgeToVisitedVertexExists(TGraph graph, TVertex curVertex, ISet<TVertex> visitedVertices)
         {
-            return !excludedEdges.Contains(new Edge<TVertex>(curVertex, visitedVertex))
-                && graph.AdjacencyLists[curVertex].Contains(visitedVertex);
+            return graph.AdjacencyLists[curVertex].Any(v => visitedVertices.Contains(v));
         }
     }
 }

@@ -19,6 +19,22 @@ namespace Graph.Algorithms.Tests.Data
             }
         }
 
+        public static DirectedGraph<int> DirectedTwoVertexLoop
+        {
+            get
+            {
+                var vertices = new List<int>() { 0, 1 };
+
+                var edges = new List<Edge<int>>()
+                {
+                    new Edge<int>(0, 1),
+                    new Edge<int>(1, 0),
+                };
+
+                return new DirectedGraph<int>(vertices, edges);
+            }
+        }
+
         public static UndirectedGraph<int> Graph1
         {
             get
@@ -175,6 +191,26 @@ namespace Graph.Algorithms.Tests.Data
                 };
 
                 return new UndirectedGraph<int>(vertices, edges);
+            }
+        }
+
+        public static DirectedGraph<int> Graph6
+        {
+            get
+            {
+                var vertices = new List<int>() { 0, 1, 2, 3, 4, 5, 6 };
+                var edges = new List<Edge<int>>()
+                {
+                    new Edge<int>(0, 1),
+                    new Edge<int>(0, 2),
+                    new Edge<int>(1, 5),
+                    new Edge<int>(3, 5),
+                    new Edge<int>(4, 3),
+                    new Edge<int>(4, 5),
+                    new Edge<int>(6, 3),
+                };
+
+                return new DirectedGraph<int>(vertices, edges);
             }
         }
     }
