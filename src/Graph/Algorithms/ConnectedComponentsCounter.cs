@@ -12,13 +12,13 @@ namespace Graph.Algorithms
     /// </summary>
     /// <typeparam name="TGraph">Graph type</typeparam>
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
-    public class ConnectedComponentsCounter<TGraph, TVertex> : IFunctionAlgorithm<TGraph, TVertex, int>
+    public class ConnectedComponentsCounter<TGraph, TVertex> : IConnectedComponentsCounter<TGraph, TVertex>
         where TGraph : GraphBase<TVertex>
         where TVertex : IComparable<TVertex>
     {
-        private readonly IActionAlgorithm<TGraph, TVertex, TVertex, TVertex> _dfsAlgorithm;
+        private readonly IGraphSearcher<TGraph, TVertex> _dfsAlgorithm;
 
-        public ConnectedComponentsCounter(IActionAlgorithm<TGraph, TVertex, TVertex, TVertex> dfsAlgorithm)
+        public ConnectedComponentsCounter(IGraphSearcher<TGraph, TVertex> dfsAlgorithm)
         {
             _dfsAlgorithm = dfsAlgorithm ?? throw new ArgumentNullException(nameof(dfsAlgorithm));
         }

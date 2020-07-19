@@ -17,13 +17,13 @@ namespace Graph.Algorithms
     /// </summary>
     /// <typeparam name="TGraph">Graph type</typeparam>
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
-    public class TopologicalSorter<TGraph, TVertex> : IFunctionAlgorithm<TGraph, TVertex, IEnumerable<TVertex>, TVertex>
+    public class TopologicalSorter<TGraph, TVertex> : ITopologicalSorter<TGraph, TVertex>
         where TGraph : GraphBase<TVertex>, IDirectedGraph<TVertex>
         where TVertex : IComparable<TVertex>
     {
-        private readonly IFunctionAlgorithm<TGraph, TVertex, bool, TVertex> _cyclesDetector;
+        private readonly ICyclesDetector<TGraph, TVertex> _cyclesDetector;
 
-        public TopologicalSorter(IFunctionAlgorithm<TGraph, TVertex, bool, TVertex> cyclesDetector)
+        public TopologicalSorter(ICyclesDetector<TGraph, TVertex> cyclesDetector)
         {
             _cyclesDetector = cyclesDetector ?? throw new ArgumentNullException(nameof(cyclesDetector));
         }

@@ -8,11 +8,11 @@ using System.Linq;
 namespace Graph.Algorithms
 {
     /// <summary>
-    /// Depth-first search (DFS) algorithm for traversing/searching graph vertices
+    /// Depth-first search (DFS) algorithm for traversing/searching graph data structure
     /// </summary>
     /// <typeparam name="TGraph">Graph type</typeparam>
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
-    public class DepthFirstSearch<TGraph, TVertex> : IActionAlgorithm<TGraph, TVertex, TVertex, TVertex>
+    public class DepthFirstSearch<TGraph, TVertex> : IGraphSearcher<TGraph, TVertex>
         where TGraph : GraphBase<TVertex>
         where TVertex : IComparable<TVertex>
     {

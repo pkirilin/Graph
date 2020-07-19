@@ -13,13 +13,13 @@ namespace Graph.Algorithms
     /// </summary>
     /// <typeparam name="TGraph">Graph type</typeparam>
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
-    public class EulerCycleSearcher<TGraph, TVertex> : IFunctionAlgorithm<TGraph, TVertex, IEnumerable<TVertex>, TVertex>
+    public class EulerCycleSearcher<TGraph, TVertex> : IEulerCycleSearcher<TGraph, TVertex>
         where TGraph : GraphBase<TVertex>
         where TVertex : IComparable<TVertex>
     {
-        private readonly IFunctionAlgorithm<TGraph, TVertex, int> _connectedComponentsCounter;
+        private readonly IConnectedComponentsCounter<TGraph, TVertex> _connectedComponentsCounter;
 
-        public EulerCycleSearcher(IFunctionAlgorithm<TGraph, TVertex, int> connectedComponentsCounter)
+        public EulerCycleSearcher(IConnectedComponentsCounter<TGraph, TVertex> connectedComponentsCounter)
         {
             _connectedComponentsCounter = connectedComponentsCounter ?? throw new ArgumentNullException(nameof(connectedComponentsCounter));
         }

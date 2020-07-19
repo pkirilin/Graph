@@ -15,7 +15,7 @@ namespace Graph.Algorithms
     /// </summary>
     /// <typeparam name="TGraph">Graph type</typeparam>
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
-    public class VertexColorizer<TGraph, TVertex> : IFunctionAlgorithm<TGraph, TVertex, IDictionary<TVertex, int>>
+    public class VertexColorizer<TGraph, TVertex> : IVertexColorizer<TGraph, TVertex>
         where TGraph : Graph<TVertex>, IUndirectedGraph<TVertex>
         where TVertex : IComparable<TVertex>
     {

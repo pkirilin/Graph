@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Graph.Abstractions.Algorithms
+namespace Graph.Abstractions.Algorithms.Base
 {
     /// <summary>
     /// Provides execution method for graph algorithm which takes parameter and performs some action without returning any result

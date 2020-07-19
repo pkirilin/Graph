@@ -15,7 +15,7 @@ namespace Graph.Algorithms
     /// </summary>
     /// <typeparam name="TGraph">Graph type</typeparam>
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
-    public class CyclesDetector<TGraph, TVertex> : IFunctionAlgorithm<TGraph, TVertex, bool, TVertex>
+    public class CyclesDetector<TGraph, TVertex> : ICyclesDetector<TGraph, TVertex>
         where TGraph : GraphBase<TVertex>
         where TVertex : IComparable<TVertex>
     {
