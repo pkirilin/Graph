@@ -53,6 +53,7 @@ namespace Graph.Algorithms.Tests.Data
                     new Edge<int>(3, 5),
                     new Edge<int>(4, 5),
                     new Edge<int>(4, 6),
+                    new Edge<int>(5, 6),
                 };
 
                 return new UndirectedGraph<int>(vertices, edges);
