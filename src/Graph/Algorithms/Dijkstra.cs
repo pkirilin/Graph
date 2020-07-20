@@ -15,7 +15,7 @@ namespace Graph.Algorithms
     /// </summary>
     /// <typeparam name="TGraph">Graph type</typeparam>
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
-    public class Dijkstra<TGraph, TVertex> : IFunctionAlgorithm<TGraph, TVertex, IDictionary<TVertex, int>, TVertex>
+    public class Dijkstra<TGraph, TVertex> : IDijkstra<TGraph, TVertex>
         where TGraph : WeightedGraph<TVertex, int>
         where TVertex : IComparable<TVertex>
     {

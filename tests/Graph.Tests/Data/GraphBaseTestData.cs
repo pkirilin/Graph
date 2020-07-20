@@ -79,5 +79,36 @@ namespace Graph.Tests.Data
                 yield return new object[] { mixedWeightedGraph, edges };
             }
         }
+
+        public static IEnumerable<object[]> MemberData_GetVertexDeg
+        {
+            get
+            {
+                var graph = new UndirectedGraph<int>(new int[] { 0, 1, 2, 3 }, new Edge<int>[]
+                {
+                    new Edge<int>(0, 1),
+                    new Edge<int>(0, 2),
+                });
+
+                yield return new object[] { graph, 0, 2 };
+                yield return new object[] { graph, 1, 1 };
+                yield return new object[] { graph, 3, 0 };
+            }
+        }
+
+        public static IEnumerable<object[]> MemberData_GetVertexDeg_WrongVertex
+        {
+            get
+            {
+                var graph = new UndirectedGraph<int>(new int[] { 0, 1, 2, 3 }, new Edge<int>[]
+                {
+                    new Edge<int>(0, 1),
+                    new Edge<int>(0, 2),
+                });
+
+                yield return new object[] { graph, -1 };
+                yield return new object[] { graph, 100 };
+            }
+        }
     }
 }

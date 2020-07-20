@@ -13,6 +13,9 @@ namespace Graph.Algorithms.Tests.Data
                 yield return new object[] { TestGraphs.TwoConnectedVertices, 0, false };
                 yield return new object[] { TestGraphs.Graph4, 0, false };
                 yield return new object[] { TestGraphs.Graph1, 0, true };
+                yield return new object[] { TestGraphs.Graph6, 4, false };
+                yield return new object[] { TestGraphs.Graph6, 0, false };
+                yield return new object[] { TestGraphs.DirectedTwoVertexLoop, 0, true };
             }
         }
 

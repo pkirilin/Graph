@@ -12,14 +12,14 @@ namespace Graph.Algorithms
     /// </summary>
     /// <typeparam name="TGraph">Graph type</typeparam>
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
-    public class Kruskal<TGraph, TVertex> : IFunctionAlgorithm<TGraph, TVertex, IEnumerable<Edge<TVertex>>>
+    public class Kruskal<TGraph, TVertex> : ISpanningTreeSearcher<TGraph, TVertex>
         where TGraph : UndirectedWeightedGraph<TVertex, int>
         where TVertex : IComparable<TVertex>
     {
-        private readonly IFunctionAlgorithm<TGraph, TVertex, int> _connectedComponentsCounter;
-        private readonly IFunctionAlgorithm<TGraph, TVertex, bool, TVertex> _cyclesDetector;
+        private readonly IConnectedComponentsCounter<TGraph, TVertex> _connectedComponentsCounter;
+        private readonly ICyclesDetector<TGraph, TVertex> _cyclesDetector;
 
-        public Kruskal(IFunctionAlgorithm<TGraph, TVertex, int> connectedComponentsCounter, IFunctionAlgorithm<TGraph, TVertex, bool, TVertex> cyclesDetector)
+        public Kruskal(IConnectedComponentsCounter<TGraph, TVertex> connectedComponentsCounter, ICyclesDetector<TGraph, TVertex> cyclesDetector)
         {
             _connectedComponentsCounter = connectedComponentsCounter ?? throw new ArgumentNullException(nameof(connectedComponentsCounter));
             _cyclesDetector = cyclesDetector ?? throw new ArgumentNullException(nameof(cyclesDetector));

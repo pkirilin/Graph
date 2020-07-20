@@ -13,13 +13,13 @@ namespace Graph.Algorithms
     /// </summary>
     /// <typeparam name="TGraph">Graph type</typeparam>
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
-    public class Prim<TGraph, TVertex> : IFunctionAlgorithm<TGraph, TVertex, IEnumerable<Edge<TVertex>>>
+    public class Prim<TGraph, TVertex> : ISpanningTreeSearcher<TGraph, TVertex>
         where TGraph : UndirectedWeightedGraph<TVertex, int>
         where TVertex : IComparable<TVertex>
     {
-        private readonly IFunctionAlgorithm<TGraph, TVertex, int> _connectedComponentsCounter;
+        private readonly IConnectedComponentsCounter<TGraph, TVertex> _connectedComponentsCounter;
 
-        public Prim(IFunctionAlgorithm<TGraph, TVertex, int> connectedComponentsCounter)
+        public Prim(IConnectedComponentsCounter<TGraph, TVertex> connectedComponentsCounter)
         {
             _connectedComponentsCounter = connectedComponentsCounter ?? throw new ArgumentNullException(nameof(connectedComponentsCounter));
         }

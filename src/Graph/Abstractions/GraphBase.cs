@@ -168,5 +168,15 @@ namespace Graph.Abstractions
             _adjacencyLists[vertex].Clear();
             _adjacencyLists.Remove(vertex);
         }
+
+        /// <summary>
+        /// Gets a degree of specified vertex
+        /// </summary>
+        public int GetVertexDeg(TVertex vertex)
+        {
+            if (!_adjacencyLists.ContainsKey(vertex))
+                throw new ArgumentException(nameof(vertex));
+            return _adjacencyLists[vertex].Count;
+        }
     }
 }
