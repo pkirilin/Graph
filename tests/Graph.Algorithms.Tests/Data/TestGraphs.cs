@@ -214,5 +214,48 @@ namespace Graph.Algorithms.Tests.Data
                 return new DirectedGraph<int>(vertices, edges);
             }
         }
+
+        public static UndirectedGraph<int> Graph7
+        {
+            get
+            {
+                var vertices = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 };
+                var edges = new List<Edge<int>>()
+                {
+                    new Edge<int>(0, 1),
+                    new Edge<int>(0, 2),
+                    new Edge<int>(0, 3),
+                    new Edge<int>(1, 2),
+                    new Edge<int>(1, 4),
+                    new Edge<int>(4, 5),
+                    new Edge<int>(4, 7),
+                    new Edge<int>(5, 6),
+                    new Edge<int>(6, 7),
+                };
+
+                return new UndirectedGraph<int>(vertices, edges);
+            }
+        }
+
+        public static UndirectedGraph<int> Graph8
+        {
+            get
+            {
+                var vertices = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 };
+                var edges = new List<Edge<int>>()
+                {
+                    new Edge<int>(0, 1),
+                    new Edge<int>(0, 2),
+                    new Edge<int>(0, 3),
+                    new Edge<int>(1, 2),
+                    new Edge<int>(4, 5),
+                    new Edge<int>(4, 7),
+                    new Edge<int>(5, 6),
+                    new Edge<int>(6, 7),
+                };
+
+                return new UndirectedGraph<int>(vertices, edges);
+            }
+        }
     }
 }
