@@ -23,6 +23,8 @@ namespace Graph.Algorithms
         {
             if (graph == null)
                 throw new ArgumentNullException(nameof(graph));
+            if (initialVertex == null)
+                throw new ArgumentNullException(nameof(initialVertex));
             if (!graph.AdjacencyLists.ContainsKey(initialVertex))
                 throw new ArgumentException($"Initial vertex = '{initialVertex}' doesn't exist in graph", nameof(initialVertex));
 

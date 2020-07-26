@@ -28,6 +28,8 @@ namespace Graph.Algorithms
         {
             if (graph == null)
                 throw new ArgumentNullException(nameof(graph));
+            if (initialVertex == null)
+                throw new ArgumentNullException(nameof(initialVertex));
             if (!graph.Vertices.Contains(initialVertex))
                 throw new ArgumentException(nameof(initialVertex));
             if (!IsEulerGraph(graph))
