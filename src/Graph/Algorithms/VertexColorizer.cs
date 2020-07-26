@@ -19,6 +19,13 @@ namespace Graph.Algorithms
         where TGraph : Graph<TVertex>, IUndirectedGraph<TVertex>
         where TVertex : IComparable<TVertex>
     {
+        private readonly IEqualityComparer<TVertex> _verticesComparer;
+
+        public VertexColorizer()
+        {
+            _verticesComparer = new GraphVertexEqualityComparer<TVertex>();
+        }
+
         public IDictionary<TVertex, int> Execute(TGraph graph)
         {
             if (graph == null)
@@ -29,7 +36,7 @@ namespace Graph.Algorithms
                 .OrderByDescending(v => graph.GetVertexDeg(v))
                 .ToList();
             // A dictionary for mapping vertices to their colors
-            var verticesAndColors = new Dictionary<TVertex, int>(new GraphVertexEqualityComparer<TVertex>());
+            var verticesAndColors = new Dictionary<TVertex, int>(_verticesComparer);
             // For simplicity, an integer value is used to represent a color
             var curColorId = 0;
 

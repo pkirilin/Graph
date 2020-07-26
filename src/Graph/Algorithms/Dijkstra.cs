@@ -15,10 +15,17 @@ namespace Graph.Algorithms
     /// </summary>
     /// <typeparam name="TGraph">Graph type</typeparam>
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
-    public class Dijkstra<TGraph, TVertex> : IDijkstra<TGraph, TVertex>
+    public class Dijkstra<TGraph, TVertex> : IShortestDistancesSearcherFromVertex<TGraph, TVertex>
         where TGraph : WeightedGraph<TVertex, int>
         where TVertex : IComparable<TVertex>
     {
+        private readonly IEqualityComparer<TVertex> _verticesComparer;
+
+        public Dijkstra()
+        {
+            _verticesComparer = new GraphVertexEqualityComparer<TVertex>();
+        }
+
         public IDictionary<TVertex, int> Execute(TGraph graph, TVertex initialVertex)
         {
             if (graph == null)
@@ -31,7 +38,7 @@ namespace Graph.Algorithms
                 throw new InvalidOperationException("For Dijkstra algorithm graph cannot contain negative weights");
 
             var shortestDistances = InitShortestDistances(graph, initialVertex);
-            var visitedVertices = new HashSet<TVertex>(new GraphVertexEqualityComparer<TVertex>());
+            var visitedVertices = new HashSet<TVertex>(_verticesComparer);
 
             while (TryFindNextVertex(shortestDistances, visitedVertices, out var curVertex))
             {

@@ -29,10 +29,7 @@ namespace Graph.Algorithms
         {
             if (graph == null)
                 throw new ArgumentNullException(nameof(graph));
-
-            var connectedComponentsCount = _connectedComponentsCounter.Execute(graph);
-
-            if (connectedComponentsCount > 1)
+            if (_connectedComponentsCounter.Execute(graph) > 1)
                 throw new InvalidOperationException("For Kruskal's algorithm graph cannot contain more than one connected component");
 
             var edges = graph.ReducedEdges;

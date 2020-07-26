@@ -16,6 +16,13 @@ namespace Graph.Algorithms
         where TGraph : GraphBase<TVertex>
         where TVertex : IComparable<TVertex>
     {
+        private readonly IEqualityComparer<TVertex> _verticesComparer;
+
+        public BreadthFirstSearch()
+        {
+            _verticesComparer = new GraphVertexEqualityComparer<TVertex>();
+        }
+
         public void Execute(TGraph graph, TVertex initialVertex, Action<TVertex> action)
         {
             if (graph == null)
@@ -28,9 +35,8 @@ namespace Graph.Algorithms
                 throw new ArgumentException($"Initial vertex = '{initialVertex}' doesn't exist in graph", nameof(initialVertex));
 
             var verticesForNextVisit = new Queue<TVertex>(new TVertex[] { initialVertex });
-            var verticesComparer = new GraphVertexEqualityComparer<TVertex>();
-            var visitedVertices = new HashSet<TVertex>(verticesComparer);
-            var queuedVertices = new HashSet<TVertex>(verticesComparer);
+            var visitedVertices = new HashSet<TVertex>(_verticesComparer);
+            var queuedVertices = new HashSet<TVertex>(_verticesComparer);
 
             while (verticesForNextVisit.Any())
             {

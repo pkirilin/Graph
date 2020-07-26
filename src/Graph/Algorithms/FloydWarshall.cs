@@ -14,7 +14,7 @@ namespace Graph.Algorithms
     /// </summary>
     /// <typeparam name="TGraph">Graph type</typeparam>
     /// <typeparam name="TVertex">Graph vertex type</typeparam>
-    public class FloydWarshall<TGraph, TVertex> : IFloydWarshall<TGraph, TVertex>
+    public class FloydWarshall<TGraph, TVertex> : IShortestDistancesSearcher<TGraph, TVertex>
         where TGraph : WeightedGraph<TVertex, int>
         where TVertex : IComparable<TVertex>
     {

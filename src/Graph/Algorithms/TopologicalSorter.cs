@@ -22,10 +22,12 @@ namespace Graph.Algorithms
         where TVertex : IComparable<TVertex>
     {
         private readonly ICyclesDetector<TGraph, TVertex> _cyclesDetector;
+        private readonly IEqualityComparer<TVertex> _verticesComparer;
 
         public TopologicalSorter(ICyclesDetector<TGraph, TVertex> cyclesDetector)
         {
             _cyclesDetector = cyclesDetector ?? throw new ArgumentNullException(nameof(cyclesDetector));
+            _verticesComparer = new GraphVertexEqualityComparer<TVertex>();
         }
 
         public IEnumerable<TVertex> Execute(TGraph graph, TVertex initialVertex)
@@ -39,9 +41,8 @@ namespace Graph.Algorithms
             if (IsAnyCycleDetected(graph))
                 throw new InvalidOperationException("For topological sorting target graph should not contain any cycle, but it does");
 
-            var verticesComparer = new GraphVertexEqualityComparer<TVertex>();
-            var notVisitedVertices = new HashSet<TVertex>(graph.Vertices.ToList(), verticesComparer);
-            var queuedVertices = new HashSet<TVertex>(verticesComparer);
+            var notVisitedVertices = new HashSet<TVertex>(graph.Vertices.ToList(), _verticesComparer);
+            var queuedVertices = new HashSet<TVertex>(_verticesComparer);
             var verticesForNextVisit = new Stack<TVertex>(new TVertex[] { initialVertex });
             var sortedVertices = new Stack<TVertex>();
 

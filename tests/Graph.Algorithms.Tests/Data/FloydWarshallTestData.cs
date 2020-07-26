@@ -6,7 +6,7 @@ namespace Graph.Algorithms.Tests.Data
 {
     static class FloydWarshallTestData
     {
-        public static IFloydWarshall<WeightedGraph<int, int>, int> FloydWarshallAlgorithm
+        public static IShortestDistancesSearcher<WeightedGraph<int, int>, int> FloydWarshallAlgorithm
             => new FloydWarshall<WeightedGraph<int, int>, int>();
 
         public static IEnumerable<object[]> MemberData_Execute

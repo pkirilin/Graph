@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Graph.Abstractions.Algorithms
 {
-    public interface IDijkstra<TGraph, TVertex> : IFunctionAlgorithm<TGraph, TVertex, IDictionary<TVertex, int>, TVertex>
+    public interface IShortestDistancesSearcher<TGraph, TVertex> : IFunctionAlgorithm<TGraph, TVertex, IDictionary<TVertex, IDictionary<TVertex, int>>>
         where TGraph : WeightedGraph<TVertex, int>
         where TVertex : IComparable<TVertex>
     {

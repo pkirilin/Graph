@@ -19,6 +19,13 @@ namespace Graph.Algorithms
         where TGraph : GraphBase<TVertex>
         where TVertex : IComparable<TVertex>
     {
+        private readonly IEqualityComparer<TVertex> _verticesComparer;
+
+        public CyclesDetector()
+        {
+            _verticesComparer = new GraphVertexEqualityComparer<TVertex>();
+        }
+
         public bool Execute(TGraph graph, TVertex initialVertex)
         {
             if (graph == null)
@@ -29,7 +36,7 @@ namespace Graph.Algorithms
                 throw new ArgumentException($"Initial vertex = '{initialVertex}' doesn't exist in graph", nameof(initialVertex));
 
             var verticesForNextVisit = new Stack<TVertex>(new TVertex[] { initialVertex });
-            var visitedVertices = new HashSet<TVertex>(new GraphVertexEqualityComparer<TVertex>());
+            var visitedVertices = new HashSet<TVertex>(_verticesComparer);
             var visitedEdges = new HashSet<Edge<TVertex>>();
 
             while (verticesForNextVisit.Any())

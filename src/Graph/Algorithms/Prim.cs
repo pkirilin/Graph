@@ -18,28 +18,26 @@ namespace Graph.Algorithms
         where TVertex : IComparable<TVertex>
     {
         private readonly IConnectedComponentsCounter<TGraph, TVertex> _connectedComponentsCounter;
+        private readonly IEqualityComparer<TVertex> _verticesComparer;
 
         public Prim(IConnectedComponentsCounter<TGraph, TVertex> connectedComponentsCounter)
         {
             _connectedComponentsCounter = connectedComponentsCounter ?? throw new ArgumentNullException(nameof(connectedComponentsCounter));
+            _verticesComparer = new GraphVertexEqualityComparer<TVertex>();
         }
 
         public IEnumerable<Edge<TVertex>> Execute(TGraph graph)
         {
             if (graph == null)
                 throw new ArgumentNullException(nameof(graph));
-
-            var connectedComponentsCount = _connectedComponentsCounter.Execute(graph);
-
-            if (connectedComponentsCount > 1)
+            if (_connectedComponentsCounter.Execute(graph) > 1)
                 throw new InvalidOperationException("For Prim's algorithm graph cannot contain more than one connected component");
             if (!graph.Vertices.Any() || !graph.Weights.Any())
                 return Enumerable.Empty<Edge<TVertex>>();
 
             var initialConsideredVertices = new List<TVertex>() { graph.Vertices.First() };
-            var verticesComparer = new GraphVertexEqualityComparer<TVertex>();
             // Vertices that are already included in spanning tree
-            var consideredVertices = new HashSet<TVertex>(initialConsideredVertices, verticesComparer);
+            var consideredVertices = new HashSet<TVertex>(initialConsideredVertices, _verticesComparer);
             // Edges that are already included in spanning tree
             var spanningTreeEdges = new HashSet<Edge<TVertex>>();
 

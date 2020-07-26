@@ -17,10 +17,12 @@ namespace Graph.Algorithms
         where TVertex : IComparable<TVertex>
     {
         private readonly IGraphSearcher<TGraph, TVertex> _dfsAlgorithm;
+        private readonly IEqualityComparer<TVertex> _verticesComparer;
 
         public ConnectedComponentsCounter(IGraphSearcher<TGraph, TVertex> dfsAlgorithm)
         {
             _dfsAlgorithm = dfsAlgorithm ?? throw new ArgumentNullException(nameof(dfsAlgorithm));
+            _verticesComparer = new GraphVertexEqualityComparer<TVertex>();
         }
 
         public int Execute(TGraph graph)
@@ -30,8 +32,7 @@ namespace Graph.Algorithms
             if (!graph.Vertices.Any())
                 return 0;
 
-            var verticesComparer = new GraphVertexEqualityComparer<TVertex>();
-            var notVisitedVertices = new HashSet<TVertex>(graph.Vertices, verticesComparer);
+            var notVisitedVertices = new HashSet<TVertex>(graph.Vertices, _verticesComparer);
             var connectedComponentsCount = 0;
 
             while (notVisitedVertices.Any())
